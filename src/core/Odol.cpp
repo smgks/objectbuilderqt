@@ -959,6 +959,12 @@ bool Odol::load(const QByteArray &data, LodObject &out, QString *error, Info *in
     if (info) {
         info->warnings = warnings;
         info->bones = mi.bones;
+        for (int i = 0; i < nLods; ++i)
+            for (const auto &s : lods[i].sections)
+                info->sections << QStringLiteral("%1 %2 special=%3")
+                                      .arg(LodNames::name(res[i]),
+                                           s.texture >= 0 && s.texture < lods[i].textures.size() ? lods[i].textures[s.texture] : QStringLiteral("-"))
+                                      .arg(s.special, 8, 16, QLatin1Char('0'));
     }
     return true;
 }

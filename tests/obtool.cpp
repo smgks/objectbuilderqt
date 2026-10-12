@@ -8,6 +8,7 @@
 //   obtool orient <model>                  face direction report per LOD
 //   obtool textures <model>                list textures and whether they resolve
 //   obtool sels <model> [lod]              named selections with point/face counts
+//   obtool mats <model> [lod]              faces per texture / material
 // <model> is a P3D (MLOD or binarized), OBJ or FBX file.
 #include "core/FbxIO.h"
 #include "core/ObjIO.h"
@@ -23,6 +24,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QHash>
+#include <QMap>
 
 #include <cstdio>
 #include <functional>
@@ -164,6 +166,9 @@ int main(int argc, char **argv)
         std::printf("version %d, %d LODs\n", info.version, int(obj.lods.size()));
         if (!info.bones.isEmpty())
             std::printf("skeleton bones: %s\n", qPrintable(info.bones.join(QStringLiteral(", "))));
+        if (qEnvironmentVariableIsSet("OBTOOL_SECTIONS"))
+            for (const QString &s : info.sections)
+                std::printf("section %s\n", qPrintable(s));
         for (const Lod &l : obj.lods)
             std::printf("  %-28s mass %8.2f points %6d faces %6d selections %3d props %2d tex0 %s\n",
                         qPrintable(LodNames::name(l.resolution)), double(l.data.totalMass()),
@@ -271,9 +276,36 @@ int main(int argc, char **argv)
                 }
             if (n)
                 c /= float(n);
-            std::printf("  %-60s points %5d faces %5d centre (%.2f %.2f %.2f)\n", qPrintable(ns.name), ns.sel.pointCount(),
-                        ns.sel.faceCount(), c.x(), c.y(), c.z());
+            // points of the selection that faces outside it also use: for a
+            // separately moving part (bone) this should be 0
+            QVector<bool> outside(o.points.size(), false);
+            for (int f = 0; f < o.faces.size(); ++f)
+                if (!ns.sel.face(f))
+                    for (int k = 0; k < o.faces[f].n; ++k)
+                        outside[o.faces[f].v[k].point] = true;
+            int shared = 0;
+            for (int i = 0; i < o.points.size(); ++i)
+                shared += ns.sel.point(i) && outside[i];
+            std::printf("  %-60s points %5d faces %5d shared %5d centre (%.2f %.2f %.2f)\n", qPrintable(ns.name),
+                        ns.sel.pointCount(), ns.sel.faceCount(), shared, c.x(), c.y(), c.z());
         }
+        return 0;
+    }
+    if (cmd == QLatin1String("mats")) {
+        LodObject obj;
+        QString err;
+        if (!loadAny(a[2], obj, &err)) {
+            std::fprintf(stderr, "FAIL: %s\n", qPrintable(err));
+            return 1;
+        }
+        const int lod = a.size() >= 4 ? a[3].toInt() : 0;
+        if (lod < 0 || lod >= obj.lods.size())
+            return 1;
+        QMap<QString, int> count;
+        for (const Face &f : obj.lods[lod].data.faces)
+            count[f.texture + QStringLiteral(" | ") + f.material]++;
+        for (auto it = count.cbegin(); it != count.cend(); ++it)
+            std::printf("%6d x %s\n", it.value(), qPrintable(it.key()));
         return 0;
     }
     if (cmd == QLatin1String("textures")) {

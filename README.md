@@ -91,11 +91,23 @@ went through Blender and back.
     by name in the FBX's folder, its `textures` folder and `<name>.fbm`.
     Textures embedded in the FBX (Blender: *Path Mode: Copy* + *Embed
     Textures*) are saved to `<name>.fbm` next to the FBX when no file is
-    found. Files on the work drive are stored `P:`-relative (as the game
-    needs); others keep their absolute path so they still display after the
-    model is saved elsewhere. The status bar reports textures found, extracted
-    and missing. PNG/TGA/JPG textures display in the viewport; the game itself
-    needs `.paa` (convert with DayZ Tools' ImageToPAA and retarget).
+    found. When a converted `.paa` sits next to the image (`x_co.png` →
+    `x_co.paa`), the `.paa` is used. Files inside an unpacked mod (a folder
+    above them has `$PBOPREFIX$`) are stored as game paths
+    (`<prefix>\data\x_co.paa`), files on the work drive `P:`-relative; others
+    keep their absolute path so they still display after the model is saved
+    elsewhere. The status bar reports textures found, extracted and missing.
+    PNG/TGA/JPG textures display in the viewport; the game itself needs `.paa`
+    (convert with DayZ Tools' ImageToPAA; re-import or retarget afterwards).
+    Partly transparent textures (`_ca`) display blended.
+  - **Materials**: name the Blender/Max material after its `.rvmat`
+    (`mymod\data\gun.rvmat`). Blender's duplicate-name suffix
+    (`gun.rvmat.001`, for a second material sharing the `.rvmat`) is ignored.
+  - **Proxies**: an object named `proxy:<path>.<n>` (e.g.
+    `proxy:\dz\weapons\attachments\optics\optic_acog.001`) becomes a proxy:
+    its faces get no texture/material and its points the proxy flag.
+  - Blender cannot hold two faces on the same vertices, so double-sided faces
+    that share vertices (and overlay layers) are merged on its side.
 - **OBJ** - *File > Import > OBJ File...* (`usemtl` names that look like
   texture paths become face textures; this is how *Export OBJ* writes them).
 

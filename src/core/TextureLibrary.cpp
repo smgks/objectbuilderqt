@@ -39,6 +39,22 @@ QString readPrefix(const QString &file)
 
 } // namespace
 
+QString TextureLibrary::modPath(const QString &absoluteFile)
+{
+    const QFileInfo fi(absoluteFile);
+    QDir d = fi.absoluteDir();
+    for (int depth = 0; depth < 12; ++depth) {
+        for (const QString &name : d.entryList({QStringLiteral("$pboprefix$*"), QStringLiteral("$prefix$*")}, QDir::Files)) {
+            const QString prefix = readPrefix(d.filePath(name));
+            if (!prefix.isEmpty())
+                return (prefix + QLatin1Char('\\') + QDir::toNativeSeparators(d.relativeFilePath(fi.absoluteFilePath()))).toLower();
+        }
+        if (!d.cdUp())
+            break;
+    }
+    return {};
+}
+
 void TextureLibrary::setModelFolder(const QString &folder)
 {
     // Folders above the model, nearest first: prefix mappings from

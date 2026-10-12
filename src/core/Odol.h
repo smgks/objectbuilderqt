@@ -15,6 +15,7 @@ struct Info {
     int version = 0;
     QStringList warnings;
     QStringList bones; // skeleton bone names (empty when the model has no skeleton)
+    QStringList sections; // per LOD section: "<resolution> <texture> special=<hex>" (diagnostics)
 };
 
 bool isOdol(const QByteArray &data);

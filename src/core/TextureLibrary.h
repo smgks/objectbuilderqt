@@ -23,6 +23,11 @@ public:
     void setSearchRoots(const QStringList &roots); // e.g. "P:/"
     void setMaxSize(int px) { m_maxSize = px; }
 
+    // Game path of a file inside an unpacked mod: when a folder above it has a
+    // $PBOPREFIX$ file, returns "<prefix>\<path below that folder>" (lower
+    // case), else an empty string.
+    static QString modPath(const QString &absoluteFile);
+
     // Returns a null image when the texture cannot be found/decoded.
     QImage image(const QString &texturePath);
     bool isCached(const QString &texturePath) const;

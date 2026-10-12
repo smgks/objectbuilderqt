@@ -1,4 +1,6 @@
 #include "FbxIO.h"
+#include "Flags.h"
+#include "TextureLibrary.h"
 
 #include <QDir>
 #include <QFile>
@@ -768,9 +770,20 @@ bool FbxIO::import(const QString &path, LodObject &into, const Options &opt, Rep
                 }
             }
         }
+        // A converted .paa next to the source image is what the game loads.
+        if (!found.isEmpty() && QFileInfo(found).suffix().compare(QLatin1String("paa"), Qt::CaseInsensitive) != 0) {
+            const QFileInfo src(found);
+            const QString paa = src.absoluteDir().filePath(src.completeBaseName() + QStringLiteral(".paa"));
+            if (QFileInfo(paa).isFile())
+                found = paa;
+        }
         QString stored;
         if (!found.isEmpty()) {
-            stored = cleanTexturePath(QDir::toNativeSeparators(found), opt);
+            // inside an unpacked mod: the game path ("<prefix>\..."), else
+            // relative to the work drive, else absolute
+            stored = TextureLibrary::modPath(found);
+            if (stored.isEmpty())
+                stored = cleanTexturePath(QDir::toNativeSeparators(found), opt);
             ++rep.texturesFound;
         } else if (!names.isEmpty()) {
             // Not on disk: keep the path as written (it may be a P:\ or game
@@ -785,7 +798,14 @@ bool FbxIO::import(const QString &path, LodObject &into, const Options &opt, Rep
     // --- materials per model (connection order) and their textures
     auto materialInfo = [&](qint64 matId, QString &texture, QString &rvmat) {
         const FNode *m = byId.value(matId);
-        const QString name = m ? objectName(*m) : QString();
+        QString name = m ? objectName(*m) : QString();
+        // Blender keeps material names unique by appending ".001", ".002"...:
+        // two materials sharing one .rvmat arrive as "x.rvmat" and "x.rvmat.001".
+        static const QRegularExpression blenderSuffix(QStringLiteral("\\.(rvmat|paa|tga|png)\\.\\d{3}$"),
+                                                      QRegularExpression::CaseInsensitiveOption);
+        const QRegularExpressionMatch suffix = blenderSuffix.match(name);
+        if (suffix.hasMatch())
+            name.chop(4);
         if (name.endsWith(QLatin1String(".rvmat"), Qt::CaseInsensitive))
             rvmat = cleanTexturePath(name, opt);
         qint64 best = 0;
@@ -986,6 +1006,16 @@ bool FbxIO::import(const QString &path, LodObject &into, const Options &opt, Rep
                     ns->sel.points[i] = 255;
                 for (int i = faceBase; i < o.faces.size(); ++i)
                     ns->sel.faces[i] = 1;
+                // An object named "proxy:<path>.<n>" is a proxy triangle: no
+                // texture or material, points flagged like CICreateProxy does.
+                if (selName.startsWith(QLatin1String("proxy:"), Qt::CaseInsensitive)) {
+                    for (int i = faceBase; i < o.faces.size(); ++i) {
+                        o.faces[i].texture.clear();
+                        o.faces[i].material.clear();
+                    }
+                    for (int i = base; i < o.points.size(); ++i)
+                        o.points[i].flags |= PointFlags::Hidden;
+                }
             }
             ++rep.meshes;
         }

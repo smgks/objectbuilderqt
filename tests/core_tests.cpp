@@ -1,5 +1,6 @@
 // Minimal self-checking tests for the core library (no test framework needed).
 #include "core/FbxIO.h"
+#include "core/Flags.h"
 #include "core/LodObject.h"
 #include "core/MeshOps.h"
 #include "core/ObjIO.h"
@@ -236,6 +237,59 @@ static void testFbxTextures()
     }
 }
 
+static void testFbxMaterialsInMod()
+{
+    // Blender export (tests/data/test_blender_materials.fbx) placed in an
+    // unpacked mod: FixMod\$PBOPREFIX$ = "fixmod", FixMod\models\fixture.fbx,
+    // texture at ..\data\cube_co.png with a converted cube_co.paa beside it.
+    QTemporaryDir dir;
+    QDir root(dir.path());
+    CHECK(root.mkpath(QStringLiteral("FixMod/models")) && root.mkpath(QStringLiteral("FixMod/data")));
+    QFile prefix(root.filePath(QStringLiteral("FixMod/$PBOPREFIX$")));
+    CHECK(prefix.open(QIODevice::WriteOnly));
+    prefix.write("fixmod\n");
+    prefix.close();
+    QImage img(8, 8, QImage::Format_RGB32);
+    img.fill(Qt::blue);
+    CHECK(img.save(root.filePath(QStringLiteral("FixMod/data/cube_co.png"))));
+    QFile paa(root.filePath(QStringLiteral("FixMod/data/cube_co.paa")));
+    CHECK(paa.open(QIODevice::WriteOnly));
+    paa.write("converted");
+    paa.close();
+    const QString fbx = root.filePath(QStringLiteral("FixMod/models/fixture.fbx"));
+    CHECK(QFile::copy(QStringLiteral(OB_TEST_DATA_DIR "/test_blender_materials.fbx"), fbx));
+
+    LodObject m;
+    m.lods.clear();
+    FbxIO::Report rep;
+    QString err;
+    CHECK(FbxIO::import(fbx, m, {}, &rep, &err));
+    CHECK(rep.meshes == 3 && rep.texturesMissing.isEmpty());
+    if (m.lods.isEmpty())
+        return;
+    const ObjectData &o = m.lods[0].data;
+    int cubeFaces = 0;
+    for (int f = 0; f < o.faces.size(); ++f) {
+        if (o.faces[f].texture.isEmpty())
+            continue;
+        ++cubeFaces;
+        // game path inside the mod, the .paa preferred over the .png
+        CHECK(o.faces[f].texture == QStringLiteral("fixmod\\data\\cube_co.paa"));
+        // "cube.rvmat.001" (Blender's duplicate name) is the same material
+        CHECK(o.faces[f].material == QStringLiteral("fixmod\\data\\cube.rvmat"));
+    }
+    CHECK(cubeFaces == 12);
+    const NamedSelection *px = o.findSelection(QStringLiteral("proxy:\\fixmod\\proxy\\thing.001"));
+    CHECK(px && px->sel.faceCount() == 1 && px->sel.pointCount() == 3);
+    if (px)
+        for (int f = 0; f < o.faces.size(); ++f)
+            if (px->sel.face(f)) {
+                CHECK(o.faces[f].texture.isEmpty() && o.faces[f].material.isEmpty());
+                for (int k = 0; k < o.faces[f].n; ++k)
+                    CHECK(o.points[o.faces[f].v[k].point].flags & PointFlags::Hidden);
+            }
+}
+
 static void testModTextureLookup()
 {
     // Unpacked mods: textures are referenced from the mod root. Case 1: the
@@ -362,6 +416,35 @@ static void testOdolKeepsWinding()
     CHECK(matched == s.faces.size() && matched == o.faces.size());
 }
 
+static void testOdolKeepsBonePartsSeparate()
+{
+    // binarize_bones_src.p3d (+ binarize_bones_model.cfg) binarized by
+    // binarize.exe: two boxes touching face to face, each its own bone. The
+    // converter must not weld the touching corners (the bones would drag each
+    // other's faces), and must rebuild both bone selections.
+    QFile f(QStringLiteral(OB_TEST_DATA_DIR "/binarize_bones_odol.p3d"));
+    CHECK(f.open(QIODevice::ReadOnly));
+    LodObject m;
+    QString err;
+    Odol::Info info;
+    CHECK(Odol::load(f.readAll(), m, &err, &info));
+    CHECK(info.bones == QStringList({QStringLiteral("part_a"), QStringLiteral("part_b")}));
+    if (m.lods.isEmpty())
+        return;
+    const ObjectData &o = m.lods[0].data;
+    CHECK(o.points.size() == 16 && o.faces.size() == 12);
+    for (const char *name : {"part_a", "part_b"}) {
+        const NamedSelection *ns = o.findSelection(QLatin1String(name));
+        CHECK(ns && ns->sel.pointCount() == 8 && ns->sel.faceCount() == 6);
+        if (!ns)
+            continue;
+        for (int fi = 0; fi < o.faces.size(); ++fi)
+            if (!ns->sel.face(fi))
+                for (int k = 0; k < o.faces[fi].n; ++k)
+                    CHECK(!ns->sel.point(o.faces[fi].v[k].point)); // no point shared with the other part
+    }
+}
+
 static void testPaaProcedural()
 {
     const QImage img = Paa::procedural(QStringLiteral("#(argb,8,8,3)color(1,0,0,1,co)"));
@@ -372,6 +455,37 @@ static void testPaaProcedural()
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
+    if (argc == 3 && QByteArray(argv[1]) == "--write-bones-sample") {
+        // Source of tests/data/binarize_bones_odol.p3d: two unit boxes that
+        // touch face to face, each a bone ("part_a", "part_b").
+        LodObject m;
+        ObjectData &o = m.lods[0].data;
+        for (int part = 0; part < 2; ++part) {
+            const int firstPoint = o.points.size(), firstFace = o.faces.size();
+            QMatrix4x4 at;
+            at.translate(float(part), 0, 0);
+            Primitives::box(o, {}, at);
+            NamedSelection ns;
+            ns.name = part == 0 ? QStringLiteral("part_a") : QStringLiteral("part_b");
+            ns.sel.resize(o.points.size(), o.faces.size());
+            for (int i = firstPoint; i < o.points.size(); ++i)
+                ns.sel.points[i] = 255;
+            for (int f = firstFace; f < o.faces.size(); ++f)
+                ns.sel.faces[f] = 1;
+            o.namedSelections.append(ns);
+        }
+        for (NamedSelection &ns : o.namedSelections)
+            ns.sel.resize(o.points.size(), o.faces.size());
+        o.selection.clear();
+        for (Face &f : o.faces)
+            f.texture = QStringLiteral("#(argb,8,8,3)color(0.5,0.5,0.5,1,co)");
+        QString err;
+        if (!P3dIO::save(QString::fromLocal8Bit(argv[2]), m, {}, &err)) {
+            std::fprintf(stderr, "%s\n", qPrintable(err));
+            return 1;
+        }
+        return 0;
+    }
     if (argc == 3 && QByteArray(argv[1]) == "--write-sample") {
         QString err;
         if (!P3dIO::save(QString::fromLocal8Bit(argv[2]), sampleModel(), {}, &err)) {
@@ -389,9 +503,11 @@ int main(int argc, char **argv)
     testFbx();
     testFbxTextures();
     testModTextureLookup();
+    testFbxMaterialsInMod();
     testFaceNormalMatchesOriginal();
     testObjWinding();
     testOdolKeepsWinding();
+    testOdolKeepsBonePartsSeparate();
     testPaaProcedural();
     if (g_failures)
         std::fprintf(stderr, "%d check(s) failed\n", g_failures);
