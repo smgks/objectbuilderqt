@@ -3,6 +3,7 @@
 #include "Compression.h"
 #include "Flags.h"
 
+#include <QtEndian>
 #include <QHash>
 #include <QSet>
 #include <QtMath>
@@ -259,6 +260,7 @@ void readMaterial(Reader &r)
 struct ModelInfo {
     float mass = 0;
     QVector<float> massArray;
+    QStringList bones; // skeleton bone names (ModelInfo skeleton), index = bone index
 };
 
 
@@ -284,6 +286,8 @@ struct OdolLod {
         QByteArray weights;
     };
     QVector<Proxy> proxies;
+    QVector<qint32> subSkeletonToSkeleton; // sub-skeleton index -> skeleton bone index
+    QByteArray vertexBoneRefs;             // 12 bytes per vertex: u32 count, 4 x (u8 sub-skeleton index, u8 weight)
     QStringList textures, materials;
     QVector<quint16> pointToVertex, vertexToPoint;
     QVector<QVector<quint16>> faces;
@@ -337,7 +341,8 @@ bool readLod(Reader &r, OdolLod &L)
         L.proxies.append(px);
     }
     // sub-skeleton maps
-    r.skip(qsizetype(r.count("subskeleton")) * 4);
+    for (qint32 i = 0, c = r.count("subskeleton"); i < c && !r.fail; ++i)
+        L.subSkeletonToSkeleton.append(r.i32()); // stored uncompressed
     for (qint32 i = 0, c = r.count("skeleton map"); i < c && !r.fail; ++i)
         r.skip(qsizetype(r.count("skeleton map entry")) * 4);
     if (v >= 50)
@@ -440,7 +445,7 @@ bool readLod(Reader &r, OdolLod &L)
     for (int i = 0; i < L.normals.size(); ++i)
         L.normals[i] = unpackNormal(at<quint32>(nrm, i));
     r.array(8, "st coords");
-    r.array(12, "vertex bone refs");
+    L.vertexBoneRefs = r.array(12, "vertex bone refs");
     r.array(32, "neighbour bone refs");
     if (!r.fail && restSize && r.p != restStart + qsizetype(restSize)) {
         // trust the stored size (newer fields we do not know about)
@@ -451,7 +456,8 @@ bool readLod(Reader &r, OdolLod &L)
 
 // ---------------------------------------------------------------- conversion
 
-void convertLod(const OdolLod &L, ObjectData &o, QStringList &warnings, const ModelInfo *mass = nullptr)
+void convertLod(const OdolLod &L, ObjectData &o, QStringList &warnings, const ModelInfo *mass = nullptr,
+                const QStringList *bones = nullptr)
 {
     o = ObjectData();
     const int nV = L.positions.size();
@@ -661,6 +667,37 @@ void convertLod(const OdolLod &L, ObjectData &o, QStringList &warnings, const Mo
                 if (sec >= 0 && sec < facesOfSection.size())
                     for (int f : facesOfSection[sec])
                         addFace(f);
+        // Bone selections: binarize drops their vertex lists and keeps the
+        // membership in the per-vertex bone table instead.
+        const int bone = ns.sel.pointCount() == 0 && bones ? int(bones->indexOf(s.name, 0, Qt::CaseInsensitive)) : -1;
+        if (bone >= 0 && L.vertexBoneRefs.size() == qsizetype(nV) * 12) {
+            const auto *refs = reinterpret_cast<const quint8 *>(L.vertexBoneRefs.constData());
+            for (int vx = 0; vx < nV; ++vx) {
+                const quint8 *e = refs + 12 * vx;
+                const quint32 n = qFromLittleEndian<quint32>(e);
+                for (quint32 k = 0; k < n && k < 4; ++k) {
+                    const int sub = e[4 + 2 * k];
+                    const quint8 w = e[5 + 2 * k];
+                    if (sub < L.subSkeletonToSkeleton.size() && L.subSkeletonToSkeleton[sub] == bone && w)
+                        ns.sel.points[vToP[vx]] = std::max(ns.sel.points[vToP[vx]], w);
+                }
+            }
+            // faces whose points all belong to the bone
+            for (int f = 0; f < o.faces.size(); ++f) {
+                bool all = true;
+                for (int k = 0; k < o.faces[f].n && all; ++k)
+                    all = ns.sel.points[o.faces[f].v[k].point] != 0;
+                if (all)
+                    ns.sel.faces[f] = 1;
+            }
+        }
+        // Face-only selections (e.g. hiddenSelections): an editable model
+        // selects the faces' points too.
+        if (ns.sel.pointCount() == 0)
+            for (int f = 0; f < o.faces.size(); ++f)
+                if (ns.sel.faces[f])
+                    for (int k = 0; k < o.faces[f].n; ++k)
+                        ns.sel.points[o.faces[f].v[k].point] = 255;
         o.namedSelections.append(ns);
     }
 
@@ -786,8 +823,8 @@ bool readModelInfo(Reader &r, ModelInfo &mi)
         if (v >= 23)
             r.skip(1);
         for (qint32 i = 0, c = r.count("bones", 10000); i < c && !r.fail; ++i) {
-            r.asciiz();
-            r.asciiz();
+            mi.bones.append(r.asciiz()); // name
+            r.asciiz();                  // parent
         }
         if (v > 40)
             r.asciiz();
@@ -892,13 +929,15 @@ bool Odol::load(const QByteArray &data, LodObject &out, QString *error, Info *in
         Lod lod;
         lod.resolution = res[i];
         const bool geometry = std::fabs(res[i] - LodNames::Geometry) < 1e10f;
-        convertLod(lods[i], lod.data, warnings, geometry ? &mi : nullptr);
+        convertLod(lods[i], lod.data, warnings, geometry ? &mi : nullptr, &mi.bones);
         result.lods.append(lod);
     }
     result.sort();
     result.active = 0;
     out = result;
-    if (info)
+    if (info) {
         info->warnings = warnings;
+        info->bones = mi.bones;
+    }
     return true;
 }

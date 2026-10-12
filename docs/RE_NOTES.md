@@ -251,6 +251,19 @@ vec3[] positions ; condensed packed normals ; u64[] ST coords ;
   reverses faces back unconditionally and keeps the normals. An earlier
   version guessed the winding from the normals and left game models
   inside-out.
+* **Bone selections** (model.cfg skeleton bones such as `bolt`, `trigger`)
+  are stored with empty vertex lists; membership is in the per-vertex bone
+  table: 12 bytes per vertex = `u32 count; 4 x {u8 subSkeletonIndex, u8
+  weight}`, with the LOD's `subSkeletonToSkeleton` (i32 per entry, read right
+  after the proxies) mapping to the ModelInfo skeleton's bone list. The
+  converter rebuilds the points (with weights) and the faces whose points all
+  belong to the bone. Checked by round trip: the StalkerFWWeapons L115A3
+  converted, saved and binarized again gives identical `boltbody`/`bolthandle`/
+  `trigger` point and face counts. Selections that are neither bones nor
+  face-listed (e.g. `bullet001`) carry no geometry in the binarized file and
+  stay empty; like the original, empty selections are not saved.
+* Face-only selections (hiddenSelections like `camo`) get their faces' points
+  added, as an editable model has them.
 * Proxy triangles and `proxy:` selections are kept; their points get flag
   `0x1000000`. A proxy without a selection is rebuilt from its transform as
   pin, pin + 2·up, pin + dir (the CICreateProxy shape) — **inferred** mapping.

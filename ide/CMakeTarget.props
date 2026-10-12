@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shared settings for the "Makefile" projects in ObjectBuilderQt.sln. Each
+  project sets $(CMakeTarget) and imports this file; building runs
+  cmake-build.ps1 (CMake + Ninja + Qt MinGW), so CMakeLists.txt stays the only
+  build definition. The include paths and defines below only feed the IDE's
+  code analysis.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <QtDir Condition="'$(QtDir)' == ''">C:\Qt\6.12.0\mingw_64</QtDir>
+    <QtTools Condition="'$(QtTools)' == ''">C:\Qt\Tools</QtTools>
+    <ObSourceDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\'))</ObSourceDir>
+    <ObBuildDir Condition="'$(Configuration)' == 'Release'">$(ObSourceDir)build\</ObBuildDir>
+    <ObBuildDir Condition="'$(Configuration)' != 'Release'">$(ObSourceDir)build-debug\</ObBuildDir>
+    <ObScript>powershell -NoProfile -ExecutionPolicy Bypass -File "$(MSBuildThisFileDirectory)cmake-build.ps1" -Config $(Configuration)</ObScript>
+
+    <NMakeBuildCommandLine>$(ObScript) -Target $(CMakeTarget)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(ObScript) -Target $(CMakeTarget) -Rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(ObScript) -Clean</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(CMakeOutput)' == ''">$(ObBuildDir)$(CMakeTarget).exe</NMakeOutput>
+    <NMakeOutput Condition="'$(CMakeOutput)' != ''">$(ObBuildDir)$(CMakeOutput)</NMakeOutput>
+
+    <NMakePreprocessorDefinitions>WIN32;_WIN64;UNICODE;_UNICODE;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;QT_OPENGL_LIB;QT_OPENGLWIDGETS_LIB;PROJECT_VERSION="0.1.0";$(ExtraDefines)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ObSourceDir)src;$(ObBuildDir)ObjectBuilderQt_autogen\include;$(QtDir)\include;$(QtDir)\include\QtCore;$(QtDir)\include\QtGui;$(QtDir)\include\QtWidgets;$(QtDir)\include\QtOpenGL;$(QtDir)\include\QtOpenGLWidgets;$(QtDir)\mkspecs\win32-g++</NMakeIncludeSearchPath>
+    <AdditionalOptions>/std:c++17 /Zc:__cplusplus</AdditionalOptions>
+
+    <!-- Run settings: Qt DLLs and plugins from the Qt install. -->
+    <LocalDebuggerCommand>$(NMakeOutput)</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>$(ObBuildDir)</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerEnvironment>PATH=$(QtDir)\bin;$(QtTools)\mingw1310_64\bin;%PATH%
+QT_PLUGIN_PATH=$(QtDir)\plugins</LocalDebuggerEnvironment>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+</Project>

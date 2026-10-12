@@ -7,6 +7,7 @@
 //   obtool obj <model> <out.obj> [lod]      export one LOD (default: first) to OBJ
 //   obtool orient <model>                  face direction report per LOD
 //   obtool textures <model>                list textures and whether they resolve
+//   obtool sels <model> [lod]              named selections with point/face counts
 // <model> is a P3D (MLOD or binarized), OBJ or FBX file.
 #include "core/FbxIO.h"
 #include "core/ObjIO.h"
@@ -161,6 +162,8 @@ int main(int argc, char **argv)
             return 1;
         }
         std::printf("version %d, %d LODs\n", info.version, int(obj.lods.size()));
+        if (!info.bones.isEmpty())
+            std::printf("skeleton bones: %s\n", qPrintable(info.bones.join(QStringLiteral(", "))));
         for (const Lod &l : obj.lods)
             std::printf("  %-28s mass %8.2f points %6d faces %6d selections %3d props %2d tex0 %s\n",
                         qPrintable(LodNames::name(l.resolution)), double(l.data.totalMass()),
@@ -245,6 +248,32 @@ int main(int argc, char **argv)
         }
         std::printf("exported %s (%d faces)\n", qPrintable(LodNames::name(obj.lods[lod].resolution)),
                     int(obj.lods[lod].data.faces.size()));
+        return 0;
+    }
+    if (cmd == QLatin1String("sels")) {
+        LodObject obj;
+        QString err;
+        if (!loadAny(a[2], obj, &err)) {
+            std::fprintf(stderr, "FAIL: %s\n", qPrintable(err));
+            return 1;
+        }
+        const int lod = a.size() >= 4 ? a[3].toInt() : 0;
+        if (lod < 0 || lod >= obj.lods.size())
+            return 1;
+        const ObjectData &o = obj.lods[lod].data;
+        for (const NamedSelection &ns : o.namedSelections) {
+            QVector3D c;
+            int n = 0;
+            for (int i = 0; i < o.points.size(); ++i)
+                if (ns.sel.point(i)) {
+                    c += o.points[i].pos;
+                    ++n;
+                }
+            if (n)
+                c /= float(n);
+            std::printf("  %-60s points %5d faces %5d centre (%.2f %.2f %.2f)\n", qPrintable(ns.name), ns.sel.pointCount(),
+                        ns.sel.faceCount(), c.x(), c.y(), c.z());
+        }
         return 0;
     }
     if (cmd == QLatin1String("textures")) {

@@ -22,10 +22,34 @@ compiler. With the Qt online installer layout on this machine:
 export PATH="/c/Qt/Tools/mingw1310_64/bin:/c/Qt/Tools/Ninja:/c/Qt/Tools/CMake_64/bin:/c/Qt/6.12.0/mingw_64/bin:$PATH"
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:/Qt/6.12.0/mingw_64
 cmake --build build
-windeployqt --no-translations build/ObjectBuilderQt.exe
 ```
 
-Run `build/ObjectBuilderQt.exe [model.p3d]`.
+Run `build/ObjectBuilderQt.exe [model.p3d]`. Each build copies the Qt and
+MinGW runtime DLLs next to the executables (`windeployqt` post-build step), so
+they start without Qt on `PATH`.
+
+### JetBrains Rider / Visual Studio
+
+Open `ObjectBuilderQt.sln`. Its projects (`ide/*.vcxproj`) are "Makefile"
+projects: Build / Rebuild / Clean run `ide/cmake-build.ps1`, which drives the
+same CMake + Ninja + Qt MinGW build as above (Release → `build/`, Debug →
+`build-debug/`, configured automatically on first build). `CMakeLists.txt` is
+still the only build definition: new source files go there, and the projects
+pick up files in `src/core`, `src/app`, `src/ui` by wildcard.
+
+- Projects: `ObjectBuilderQt` (the app), `obcore` (core library),
+  `obcore_tests`, `obtool`. Pick one as the run target.
+- Compiler errors are reported as `file(line,col): error : ...`, so Rider and
+  Visual Studio link them to the source.
+- Requires the Visual Studio C++ build tools (for the MSBuild C++ targets);
+  the compiler used is still Qt's MinGW. Other Qt/MinGW locations: set the
+  `QT_DIR` / `QT_TOOLS` environment variables.
+- Breakpoint debugging: the IDEs' Windows debuggers expect MSVC (PDB) builds,
+  and MinGW binaries carry GDB debug info, so stepping through code from Rider
+  may not work. Running works.
+
+`CMakePresets.json` (presets `release` / `debug`) describes the same setup for
+IDEs that open `CMakeLists.txt` directly.
 
 ## Tests
 

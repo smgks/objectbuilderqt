@@ -8,6 +8,20 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets)
 
+# After each build, copy the Qt and compiler runtime DLLs next to the
+# executable so it starts from an IDE, Explorer or a shell without Qt on PATH.
+get_target_property(_ob_qmake Qt6::qmake IMPORTED_LOCATION)
+get_filename_component(_ob_qt_bin "${_ob_qmake}" DIRECTORY)
+find_program(OB_WINDEPLOYQT windeployqt HINTS "${_ob_qt_bin}")
+function(ob_deploy_qt target)
+    if(WIN32 AND OB_WINDEPLOYQT)
+        add_custom_command(TARGET ${target} POST_BUILD
+            COMMAND "${OB_WINDEPLOYQT}" --no-translations --compiler-runtime --no-system-dxc-compiler --verbose 0 "$<TARGET_FILE:${target}>"
+            COMMENT "Copying Qt DLLs next to ${target}"
+            VERBATIM)
+    endif()
+endfunction()
+
 # --- core: file formats, data model, geometry (no widgets) ---------------
 add_library(obcore STATIC
     src/core/Flags.h
@@ -52,6 +66,7 @@ add_executable(ObjectBuilderQt WIN32
 )
 target_link_libraries(ObjectBuilderQt PRIVATE obcore Qt6::Widgets Qt6::OpenGL Qt6::OpenGLWidgets)
 target_compile_definitions(ObjectBuilderQt PRIVATE PROJECT_VERSION="${PROJECT_VERSION}")
+ob_deploy_qt(ObjectBuilderQt)
 endif()
 
 # --- tests ----------------------------------------------------------------
@@ -60,5 +75,7 @@ add_executable(obcore_tests tests/core_tests.cpp)
 target_link_libraries(obcore_tests PRIVATE obcore)
 target_compile_definitions(obcore_tests PRIVATE OB_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/data")
 add_test(NAME obcore_tests COMMAND obcore_tests)
+ob_deploy_qt(obcore_tests)
 add_executable(obtool tests/obtool.cpp)
 target_link_libraries(obtool PRIVATE obcore)
+ob_deploy_qt(obtool)

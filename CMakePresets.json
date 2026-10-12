@@ -1,0 +1,44 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "mingw-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "environment": {
+        "QT_DIR": "C:/Qt/6.12.0/mingw_64",
+        "QT_TOOLS": "C:/Qt/Tools",
+        "PATH": "$env{QT_TOOLS}/mingw1310_64/bin;$env{QT_TOOLS}/Ninja;$env{QT_DIR}/bin;$penv{PATH}"
+      },
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "$env{QT_DIR}",
+        "CMAKE_CXX_COMPILER": "$env{QT_TOOLS}/mingw1310_64/bin/c++.exe",
+        "CMAKE_MAKE_PROGRAM": "$env{QT_TOOLS}/Ninja/ninja.exe",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release (Qt MinGW)",
+      "inherits": "mingw-base",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug (Qt MinGW)",
+      "inherits": "mingw-base",
+      "binaryDir": "${sourceDir}/build-debug",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "release", "configurePreset": "release" },
+    { "name": "debug", "configurePreset": "debug" }
+  ],
+  "testPresets": [
+    { "name": "release", "configurePreset": "release", "output": { "outputOnFailure": true } },
+    { "name": "debug", "configurePreset": "debug", "output": { "outputOnFailure": true } }
+  ]
+}
