@@ -1,0 +1,2926 @@
+{
+ "source": {
+  "file": "ObjectBuilder.exe",
+  "bytes": 5709312,
+  "generatedBy": "tools/gen_ui_spec.js"
+ },
+ "mainMenu": [
+  {
+   "text": "&File",
+   "items": [
+    {
+     "id": 57600,
+     "text": "&New"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 57601,
+     "text": "&Open..."
+    },
+    {
+     "id": 33402,
+     "text": "Open from Source Control..."
+    },
+    {
+     "id": 33115,
+     "text": "&Merge..."
+    },
+    {
+     "id": 33237,
+     "text": "Merge As Selection..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 57603,
+     "text": "&Save"
+    },
+    {
+     "id": 57604,
+     "text": "Save &As..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "text": "Import",
+     "items": [
+      {
+       "id": 33192,
+       "text": "3D Studio..."
+      },
+      {
+       "id": 33275,
+       "text": "Universal Bistudio TXT"
+      },
+      {
+       "id": 33239,
+       "text": "BIANM Maya animation..."
+      },
+      {
+       "id": 33240,
+       "text": "OBJ File..."
+      },
+      {
+       "id": 33217,
+       "text": "ASF/AMC (MoCap)..."
+      },
+      {
+       "id": 33218,
+       "text": "Biovision BVH (FilmBox)..."
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33238,
+       "text": "MAYA Weight script..."
+      }
+     ]
+    },
+    {
+     "text": "Export",
+     "items": [
+      {
+       "id": 33441,
+       "text": "Universal Bistudio TXT "
+      },
+      {
+       "id": 33120,
+       "text": "3D Studio..."
+      },
+      {
+       "id": 33215,
+       "text": "P3D Old Version..."
+      },
+      {
+       "id": 33205,
+       "text": "MDA..."
+      }
+     ]
+    },
+    {
+     "text": "Source Control",
+     "items": [
+      {
+       "id": 33491,
+       "text": "Enabled"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33392,
+       "text": "Save and Check In"
+      },
+      {
+       "id": 33394,
+       "text": "Check Out"
+      },
+      {
+       "id": 33393,
+       "text": "Undo Check Out"
+      },
+      {
+       "id": 33391,
+       "text": "Get Latest Version"
+      },
+      {
+       "id": 33401,
+       "text": "Show History"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33416,
+       "text": "Redo Check Out"
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32914,
+     "text": "Options..."
+    },
+    {
+     "id": 33251,
+     "text": "ShortCuts..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 57616,
+     "text": "Recent File"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 57665,
+     "text": "E&xit"
+    }
+   ]
+  },
+  {
+   "text": "&Edit",
+   "items": [
+    {
+     "id": 57643,
+     "text": "&Undo"
+    },
+    {
+     "id": 57644,
+     "text": "&Redo"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 57635,
+     "text": "Cu&t"
+    },
+    {
+     "id": 57634,
+     "text": "&Copy"
+    },
+    {
+     "id": 57637,
+     "text": "&Paste"
+    },
+    {
+     "id": 32933,
+     "text": "Del&ete"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 57642,
+     "text": "Select &All"
+    },
+    {
+     "id": 32869,
+     "text": "&Deselect"
+    },
+    {
+     "id": 33828,
+     "text": "Deselect &Faces"
+    },
+    {
+     "id": 33827,
+     "text": "Deselect &Vertices"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32870,
+     "text": "&Invert Selection"
+    },
+    {
+     "id": 32945,
+     "text": "Select faces from points"
+    },
+    {
+     "id": 32946,
+     "text": "Select points from faces"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33822,
+     "text": "Grow selected"
+    },
+    {
+     "id": 33823,
+     "text": "Shrink selected"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32871,
+     "text": "Select Locked"
+    },
+    {
+     "id": 33098,
+     "text": "Select Hidden"
+    },
+    {
+     "id": 33126,
+     "text": "Select One Side"
+    },
+    {
+     "id": 33265,
+     "text": "Unselect triangles"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33099,
+     "text": "Space Warp"
+    },
+    {
+     "id": 33190,
+     "text": "Linear Deform"
+    },
+    {
+     "text": "Selection operators",
+     "items": [
+      {
+       "id": 33831,
+       "text": "Copy"
+      },
+      {
+       "id": 33833,
+       "text": "Union"
+      },
+      {
+       "id": 33832,
+       "text": "Complement"
+      },
+      {
+       "id": 33834,
+       "text": "Intersection"
+      },
+      {
+       "id": 33835,
+       "text": "Complement of Inters"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33830,
+       "text": "Recall"
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32874,
+     "text": "Center Pin"
+    },
+    {
+     "id": 33065,
+     "text": "Use Pin"
+    },
+    {
+     "separator": true
+    },
+    {
+     "text": "Edit &Modes",
+     "items": [
+      {
+       "id": 32820,
+       "text": "Select &object"
+      },
+      {
+       "id": 32817,
+       "text": "Select &faces"
+      },
+      {
+       "id": 32818,
+       "text": "Select &vertices"
+      },
+      {
+       "id": 33475,
+       "text": "Select polygons"
+      },
+      {
+       "id": 32819,
+       "text": "Move &pin"
+      },
+      {
+       "id": 32812,
+       "text": "Edit Texture"
+      },
+      {
+       "id": 33193,
+       "text": "Paint vertices"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 32876,
+       "text": "Laso"
+      },
+      {
+       "id": 33184,
+       "text": "Touch Faces"
+      },
+      {
+       "id": 33226,
+       "text": "Touch Edges"
+      },
+      {
+       "id": 33272,
+       "text": "Turn Edge"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "text": "&Create",
+   "items": [
+    {
+     "id": 32883,
+     "text": "Point"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32885,
+     "text": "Plane"
+    },
+    {
+     "id": 32886,
+     "text": "Box"
+    },
+    {
+     "id": 33096,
+     "text": "Circle"
+    },
+    {
+     "id": 32887,
+     "text": "Spehere"
+    },
+    {
+     "id": 32888,
+     "text": "Cylinder"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32941,
+     "text": "&New Face"
+    },
+    {
+     "id": 33185,
+     "text": "Proxy"
+    },
+    {
+     "id": 32949,
+     "text": "Create Polygon"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33085,
+     "text": "Extrude"
+    },
+    {
+     "id": 33097,
+     "text": "Shape"
+    }
+   ]
+  },
+  {
+   "text": "&View",
+   "items": [
+    {
+     "text": "Viewers",
+     "items": [
+      {
+       "text": "Buldozer",
+       "items": [
+        {
+         "id": 33321,
+         "text": "Start/Restart"
+        },
+        {
+         "text": "Other",
+         "items": [
+          {
+           "id": 33325,
+           "text": "Attach"
+          },
+          {
+           "id": 33326,
+           "text": "Detach"
+          },
+          {
+           "id": 33353,
+           "text": "Stop"
+          },
+          {
+           "id": 33489,
+           "text": "Start New Instance"
+          },
+          {
+           "separator": true
+          },
+          {
+           "id": 33357,
+           "text": "Run Script"
+          },
+          {
+           "separator": true
+          },
+          {
+           "id": 33375,
+           "text": "Refresh Viewer"
+          }
+         ]
+        },
+        {
+         "separator": true
+        },
+        {
+         "id": 33329,
+         "text": "Hide Textures"
+        },
+        {
+         "id": 33330,
+         "text": "Hide Materials"
+        },
+        {
+         "id": 33331,
+         "text": "Hide Proxies"
+        },
+        {
+         "id": 33332,
+         "text": "Hide Hidden Faces"
+        },
+        {
+         "id": 33333,
+         "text": "Multiple LODs"
+        },
+        {
+         "id": 33338,
+         "text": "Show Wireframe"
+        },
+        {
+         "id": 33335,
+         "text": "Show Shadow"
+        },
+        {
+         "id": 33334,
+         "text": "Beware Unsuported Textures"
+        },
+        {
+         "id": 33336,
+         "text": "Bring to top after update"
+        },
+        {
+         "id": 33339,
+         "text": "Disable Model Config"
+        },
+        {
+         "separator": true
+        },
+        {
+         "text": "Selection Masking",
+         "items": [
+          {
+           "id": 33367,
+           "text": "Mask Texture"
+          },
+          {
+           "id": 33368,
+           "text": "Mask Material"
+          },
+          {
+           "id": 33369,
+           "text": "Highlight Selection"
+          },
+          {
+           "id": 33371,
+           "text": "Crop Selection"
+          },
+          {
+           "id": 33372,
+           "text": "Mask Wireframe"
+          },
+          {
+           "id": 33370,
+           "text": "Disable Masking"
+          },
+          {
+           "separator": true
+          },
+          {
+           "id": 33354,
+           "text": "Change Masking Texture"
+          },
+          {
+           "id": 33355,
+           "text": "Change Masking Material"
+          },
+          {
+           "id": 33356,
+           "text": "Change Wireframe Texture"
+          },
+          {
+           "separator": true
+          },
+          {
+           "id": 33847,
+           "text": "Invert Selection"
+          }
+         ]
+        },
+        {
+         "text": "Ground Object",
+         "items": [
+          {
+           "id": 33463,
+           "text": "Position Default"
+          },
+          {
+           "id": 33464,
+           "text": "Position Zero"
+          },
+          {
+           "id": 33465,
+           "text": "Centered"
+          },
+          {
+           "id": 33466,
+           "text": "Lowest Y"
+          },
+          {
+           "id": 33467,
+           "text": "Disabled"
+          },
+          {
+           "separator": true
+          },
+          {
+           "id": 33462,
+           "text": "Browse"
+          }
+         ]
+        },
+        {
+         "text": "Markers",
+         "items": [
+          {
+           "id": 33337,
+           "text": "Enable"
+          },
+          {
+           "separator": true
+          },
+          {
+           "id": 33474,
+           "text": "Browse"
+          }
+         ]
+        },
+        {
+         "text": "RTM Preview",
+         "items": [
+          {
+           "id": 33516,
+           "text": "Set RTM"
+          },
+          {
+           "id": 33517,
+           "text": "Clear RTM"
+          }
+         ]
+        },
+        {
+         "separator": true
+        },
+        {
+         "id": 33341,
+         "text": "Autocenter"
+        },
+        {
+         "id": 33342,
+         "text": "Center to Pin"
+        },
+        {
+         "id": 33343,
+         "text": "Center Selection"
+        },
+        {
+         "separator": true
+        },
+        {
+         "id": 33350,
+         "text": "Environment Editor"
+        },
+        {
+         "id": 33241,
+         "text": "Freeze Animation"
+        },
+        {
+         "separator": true
+        },
+        {
+         "text": "Menus for ShortCuts",
+         "items": [
+          {
+           "id": 33360,
+           "text": "Menu \"Buldozer\""
+          },
+          {
+           "id": 33361,
+           "text": "Menu \"Selection Masking\""
+          },
+          {
+           "id": 33362,
+           "text": "Menu \"Other\""
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32787,
+     "text": "Front"
+    },
+    {
+     "id": 32786,
+     "text": "Top"
+    },
+    {
+     "id": 32785,
+     "text": "Left"
+    },
+    {
+     "id": 32788,
+     "text": "Projected"
+    },
+    {
+     "id": 33168,
+     "text": "Right"
+    },
+    {
+     "id": 33169,
+     "text": "Back"
+    },
+    {
+     "id": 33170,
+     "text": "Bottom"
+    },
+    {
+     "id": 33129,
+     "text": "Look at face"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33082,
+     "text": "Zoom"
+    },
+    {
+     "id": 33080,
+     "text": "Zoom In"
+    },
+    {
+     "id": 33081,
+     "text": "Zoom Out"
+    },
+    {
+     "text": "Center && Zoom ",
+     "items": [
+      {
+       "id": 33077,
+       "text": "Drawing"
+      },
+      {
+       "id": 33078,
+       "text": "Selection"
+      },
+      {
+       "id": 33122,
+       "text": "Auto"
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32857,
+     "text": "Solid &Fill Faces"
+    },
+    {
+     "id": 32858,
+     "text": "Face &Culling"
+    },
+    {
+     "id": 32859,
+     "text": "&Grid\t"
+    },
+    {
+     "separator": true
+    },
+    {
+     "text": "Lock coordinates",
+     "items": [
+      {
+       "id": 32797,
+       "text": "XY"
+      },
+      {
+       "id": 32798,
+       "text": "XZ"
+      },
+      {
+       "id": 32918,
+       "text": "YZ"
+      },
+      {
+       "id": 32799,
+       "text": "X"
+      },
+      {
+       "id": 32800,
+       "text": "Y"
+      },
+      {
+       "id": 32801,
+       "text": "Z"
+      }
+     ]
+    },
+    {
+     "id": 32802,
+     "text": "Lock Camera Rotation"
+    },
+    {
+     "id": 32854,
+     "text": "Look At &Pin"
+    },
+    {
+     "separator": true
+    },
+    {
+     "text": "Lock/Hide",
+     "items": [
+      {
+       "id": 32865,
+       "text": "&Hide Selection"
+      },
+      {
+       "id": 32866,
+       "text": "&Unhide"
+      },
+      {
+       "id": 32867,
+       "text": "&Lock Selection"
+      },
+      {
+       "id": 32868,
+       "text": "Unlock"
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32951,
+     "text": "Show proxy objects "
+    },
+    {
+     "id": 32952,
+     "text": "Hide proxy objects"
+    },
+    {
+     "id": 33498,
+     "text": "Proxy Level"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33064,
+     "text": "Colorize Objects"
+    },
+    {
+     "id": 32850,
+     "text": "Refresh"
+    }
+   ]
+  },
+  {
+   "text": "Str&ucture",
+   "items": [
+    {
+     "id": 32921,
+     "text": "Check Faces"
+    },
+    {
+     "id": 33256,
+     "text": "Check Textures"
+    },
+    {
+     "id": 32944,
+     "text": "Center All"
+    },
+    {
+     "id": 33430,
+     "text": "Find Flags"
+    },
+    {
+     "separator": true
+    },
+    {
+     "text": "Topology",
+     "items": [
+      {
+       "id": 32930,
+       "text": "Find Non-Closed"
+      },
+      {
+       "id": 32931,
+       "text": "Close"
+      },
+      {
+       "id": 32925,
+       "text": "Find Components"
+      },
+      {
+       "id": 32932,
+       "text": "Split"
+      },
+      {
+       "id": 32955,
+       "text": "Break Welds"
+      }
+     ]
+    },
+    {
+     "text": "Convexity",
+     "items": [
+      {
+       "id": 32928,
+       "text": "Find Non-Convexities"
+      },
+      {
+       "id": 32927,
+       "text": "Convex Hull"
+      },
+      {
+       "id": 32926,
+       "text": "Component Convex Hull"
+      },
+      {
+       "id": 32929,
+       "text": "Select Half Space"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33271,
+       "text": "Find Non-Convex points"
+      },
+      {
+       "id": 33269,
+       "text": "Make convex "
+      },
+      {
+       "id": 33426,
+       "text": "Convexity Fine Tune"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 32956,
+       "text": "Split to Convex"
+      }
+     ]
+    },
+    {
+     "id": 33249,
+     "text": "Carve"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32923,
+     "text": "Triangulate \\"
+    },
+    {
+     "id": 32943,
+     "text": "Triangulate /"
+    },
+    {
+     "id": 32957,
+     "text": "Triangulate Convex"
+    },
+    {
+     "id": 32958,
+     "text": "Triangulate Concave"
+    },
+    {
+     "id": 32924,
+     "text": "Squarize"
+    },
+    {
+     "id": 33228,
+     "text": "Squarize All Lods"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32942,
+     "text": "Pin Cull"
+    },
+    {
+     "id": 33163,
+     "text": "Multiple Pin Cull"
+    },
+    {
+     "separator": true
+    }
+   ]
+  },
+  {
+   "text": "&Points",
+   "items": [
+    {
+     "id": 32893,
+     "text": "Select First"
+    },
+    {
+     "id": 32894,
+     "text": "Select Next"
+    },
+    {
+     "id": 32895,
+     "text": "Select Previous"
+    },
+    {
+     "id": 32922,
+     "text": "Select Isolated\t"
+    },
+    {
+     "separator": true
+    },
+    {
+     "text": "Transform 3D",
+     "items": [
+      {
+       "id": 32903,
+       "text": "Move"
+      },
+      {
+       "id": 32904,
+       "text": "Rotate"
+      },
+      {
+       "id": 32905,
+       "text": "Scale"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33499,
+       "text": "Show Local Axis"
+      },
+      {
+       "id": 33501,
+       "text": "Edt Local Axis"
+      },
+      {
+       "id": 33511,
+       "text": "Direction from Face(s)"
+      },
+      {
+       "id": 33513,
+       "text": "From Proxy"
+      },
+      {
+       "id": 33510,
+       "text": "Selection with Local Axis"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33505,
+       "text": "Local Axis Menu"
+      }
+     ]
+    },
+    {
+     "text": "Transform 2D",
+     "items": [
+      {
+       "id": 33089,
+       "text": "Rotate"
+      },
+      {
+       "id": 33090,
+       "text": "Scale"
+      },
+      {
+       "id": 33091,
+       "text": "Mirror X"
+      },
+      {
+       "id": 33092,
+       "text": "Mirror Y"
+      }
+     ]
+    },
+    {
+     "text": "Transform &record",
+     "items": [
+      {
+       "id": 33843,
+       "text": "&Record freehand transform"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33844,
+       "text": "&Use recorded transform"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33845,
+       "text": "&Save"
+      },
+      {
+       "id": 33846,
+       "text": "&Load"
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32938,
+     "text": "Merge"
+    },
+    {
+     "id": 33130,
+     "text": "Merge near..."
+    },
+    {
+     "id": 33267,
+     "text": "Remove"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33189,
+     "text": "Flatten Points ..."
+    },
+    {
+     "id": 33236,
+     "text": "Lock Normals..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33166,
+     "text": "Uniform scale"
+    },
+    {
+     "id": 33248,
+     "text": "Move by normals"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32891,
+     "text": "Properties"
+    }
+   ]
+  },
+  {
+   "text": "F&aces",
+   "items": [
+    {
+     "text": "&Draw",
+     "items": [
+      {
+       "id": 32879,
+       "text": "Triangle"
+      },
+      {
+       "id": 32880,
+       "text": "Quad"
+      },
+      {
+       "id": 33480,
+       "text": "Polygon"
+      },
+      {
+       "id": 32881,
+       "text": "Strip"
+      },
+      {
+       "id": 32882,
+       "text": "Fan"
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32935,
+     "text": "&Reverse"
+    },
+    {
+     "id": 32936,
+     "text": "&Uncross"
+    },
+    {
+     "id": 32937,
+     "text": "Re&move"
+    },
+    {
+     "text": "De&generated Faces",
+     "items": [
+      {
+       "id": 32948,
+       "text": "Check"
+      },
+      {
+       "id": 32947,
+       "text": "&Repair"
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33131,
+     "text": "Split  / Hole"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33141,
+     "text": "Move top"
+    },
+    {
+     "id": 33142,
+     "text": "Move bottom"
+    },
+    {
+     "id": 33143,
+     "text": "Move to next alpha"
+    },
+    {
+     "id": 33144,
+     "text": "Move to prev alpha"
+    },
+    {
+     "id": 32950,
+     "text": "Sort"
+    },
+    {
+     "id": 32953,
+     "text": "Sort Alpha"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32919,
+     "text": "Recalculate &Normals"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32890,
+     "text": "&Face Properties"
+    }
+   ]
+  },
+  {
+   "text": "&Surfaces",
+   "items": [
+    {
+     "id": 32940,
+     "text": "Sha&rp Edge"
+    },
+    {
+     "id": 32939,
+     "text": "Smoot&h Edge"
+    },
+    {
+     "separator": true
+    },
+    {
+     "text": "UVSets",
+     "items": [
+      {
+       "id": 33523,
+       "text": "Activate 0"
+      },
+      {
+       "id": 33623,
+       "text": "Activate 100"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33519,
+       "text": "Add"
+      },
+      {
+       "id": 33520,
+       "text": "Delete Active"
+      },
+      {
+       "id": 33521,
+       "text": "Change ID"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33522,
+       "text": "UV Editor..."
+      }
+     ]
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33201,
+     "text": "&Undo Gizmo"
+    },
+    {
+     "text": "&Gizmo",
+     "items": [
+      {
+       "id": 33200,
+       "text": "Reset Gizmo"
+      },
+      {
+       "id": 33198,
+       "text": "Show Gizmo"
+      },
+      {
+       "id": 33199,
+       "text": "Edit Gizmo\t"
+      }
+     ]
+    },
+    {
+     "id": 33203,
+     "text": "Gizmo &Mapping..."
+    },
+    {
+     "id": 32916,
+     "text": "&Cylindric Mapping (old)..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32812,
+     "text": "Set Background &Texture..."
+    },
+    {
+     "id": 32813,
+     "text": "&Background Mapping"
+    },
+    {
+     "id": 32954,
+     "text": "&Neighbour Mapping"
+    },
+    {
+     "id": 33244,
+     "text": "Un&wrap structure..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 32913,
+     "text": "Background from &Face"
+    },
+    {
+     "id": 33039,
+     "text": "Fit Bgr. from &Selection"
+    },
+    {
+     "id": 33246,
+     "text": "Set &Automap Selection"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33799,
+     "text": "Me&rge Textures"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33235,
+     "text": "&Texel statistics..."
+    }
+   ]
+  },
+  {
+   "text": "&Tools",
+   "items": [
+    {
+     "id": 33109,
+     "text": "Match Direction..."
+    },
+    {
+     "id": 33125,
+     "text": "Calculator..."
+    },
+    {
+     "id": 33191,
+     "text": "Animation normalization..."
+    },
+    {
+     "id": 33194,
+     "text": "Copy weights..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33208,
+     "text": "Find first point with >3 weights"
+    },
+    {
+     "id": 33212,
+     "text": "Weight Automation..."
+    },
+    {
+     "id": 33214,
+     "text": "Animation (face) adaptation..."
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33250,
+     "text": "&Mass Texture && Material renaming..."
+    }
+   ]
+  },
+  {
+   "text": "&Window",
+   "items": [
+    {
+     "id": 32795,
+     "text": "Four views (F,L,T,3D]"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 57653,
+     "text": "S&plit"
+    },
+    {
+     "id": 59393,
+     "text": "&Status Bar"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 59392,
+     "text": "Main T&oolbar"
+    },
+    {
+     "id": 32784,
+     "text": "Vie&w Control Bar"
+    },
+    {
+     "id": 32834,
+     "text": "Edit Toolbar"
+    },
+    {
+     "id": 33415,
+     "text": "Sou&rce Control"
+    },
+    {
+     "separator": true
+    },
+    {
+     "id": 33040,
+     "text": "&Animations"
+    },
+    {
+     "id": 33854,
+     "text": "Animations &Properties"
+    },
+    {
+     "id": 33087,
+     "text": "Extrude Segments"
+    },
+    {
+     "id": 32877,
+     "text": "&History"
+    },
+    {
+     "id": 32852,
+     "text": "&Current position"
+    },
+    {
+     "id": 32835,
+     "text": "&Lods"
+    },
+    {
+     "id": 33067,
+     "text": "&Mass"
+    },
+    {
+     "id": 33286,
+     "text": "Resource L&ibrary"
+    },
+    {
+     "id": 33114,
+     "text": "Measuring"
+    },
+    {
+     "id": 32771,
+     "text": "&Named Properties"
+    },
+    {
+     "id": 32860,
+     "text": "Name&d Selections"
+    },
+    {
+     "id": 33157,
+     "text": "S&election Operators"
+    },
+    {
+     "id": 32775,
+     "text": "&Texture Library"
+    },
+    {
+     "id": 32789,
+     "text": "&User Views"
+    },
+    {
+     "id": 33442,
+     "text": "Script Console"
+    }
+   ]
+  },
+  {
+   "text": "Automation",
+   "items": [
+    {
+     "text": "&Macro",
+     "items": [
+      {
+       "id": 33257,
+       "text": "Record Macro"
+      },
+      {
+       "text": "Play Macro",
+       "items": [
+        {
+         "id": 33259,
+         "text": "Once"
+        },
+        {
+         "id": 33817,
+         "text": "For Each LOD"
+        },
+        {
+         "id": 33818,
+         "text": "For Each Resolution LOD"
+        },
+        {
+         "id": 33819,
+         "text": "For Each Edit LOD"
+        },
+        {
+         "id": 33820,
+         "text": "For Each Geometry LOD"
+        },
+        {
+         "id": 33821,
+         "text": "For Each Animation"
+        }
+       ]
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33811,
+       "text": "Load Macro"
+      },
+      {
+       "id": 33262,
+       "text": "Save Last Macro As..."
+      }
+     ]
+    },
+    {
+     "text": "&Scripts",
+     "items": [
+      {
+       "id": 33440,
+       "text": "Manage Scripts"
+      },
+      {
+       "id": 33435,
+       "text": "Run Script"
+      },
+      {
+       "id": 33436,
+       "text": "Edit Script"
+      },
+      {
+       "separator": true
+      },
+      {
+       "id": 33442,
+       "text": "Script Console"
+      },
+      {
+       "id": 33443,
+       "text": "Console Font"
+      }
+     ]
+    },
+    {
+     "separator": true
+    }
+   ]
+  },
+  {
+   "text": "&Help",
+   "items": [
+    {
+     "id": 57664,
+     "text": "&About Object Builder..."
+    },
+    {
+     "separator": true
+    }
+   ]
+  }
+ ],
+ "contextMenus": {
+  "lodList": [
+   {
+    "id": 32836,
+    "text": "&New"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 32837,
+    "text": "D&uplicate"
+   },
+   {
+    "id": 32838,
+    "text": "&Delete"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 32840,
+    "text": "Show at &background"
+   },
+   {
+    "text": "Display",
+    "items": [
+     {
+      "id": 32844,
+      "text": "&Short"
+     },
+     {
+      "id": 32843,
+      "text": "Details"
+     }
+    ]
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 32841,
+    "text": "Properties"
+   }
+  ],
+  "namedSelections": [
+   {
+    "text": "Context Menu",
+    "items": [
+     {
+      "id": 32861,
+      "text": "&New"
+     },
+     {
+      "separator": true
+     },
+     {
+      "id": 32862,
+      "text": "Delete"
+     },
+     {
+      "id": 32872,
+      "text": "Delete (All LODs)"
+     },
+     {
+      "id": 32863,
+      "text": "Rename"
+     },
+     {
+      "id": 32873,
+      "text": "Rename (All LODs)"
+     },
+     {
+      "id": 33102,
+      "text": "Proxy"
+     },
+     {
+      "id": 33445,
+      "text": "Delete Empty"
+     },
+     {
+      "separator": true
+     },
+     {
+      "id": 33278,
+      "text": "Move Selection To Proxy"
+     },
+     {
+      "id": 33279,
+      "text": "Move Selection To Proxy (All LODs}"
+     },
+     {
+      "id": 33281,
+      "text": "Extract Proxy"
+     },
+     {
+      "id": 33284,
+      "text": "Extract Proxy (All LODs)"
+     },
+     {
+      "separator": true
+     },
+     {
+      "id": 32864,
+      "text": "Redefine"
+     },
+     {
+      "id": 33197,
+      "text": "Redefine && Normalize"
+     },
+     {
+      "id": 33195,
+      "text": "Set Normalize Group"
+     },
+     {
+      "separator": true
+     },
+     {
+      "id": 33066,
+      "text": "Weights"
+     }
+    ]
+   }
+  ],
+  "namedProperties": [
+   {
+    "id": 32772,
+    "text": "&New"
+   },
+   {
+    "id": 32773,
+    "text": "Delete"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 32774,
+    "text": "Edit"
+   }
+  ],
+  "animations": [
+   {
+    "id": 33041,
+    "text": "New"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 33042,
+    "text": "Delete"
+   },
+   {
+    "id": 33043,
+    "text": "Rename"
+   },
+   {
+    "id": 33044,
+    "text": "Redefine"
+   },
+   {
+    "id": 33045,
+    "text": "Import..."
+   },
+   {
+    "id": 33432,
+    "text": "Delete All Animations"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 33046,
+    "text": "Copy"
+   },
+   {
+    "id": 33047,
+    "text": "Paste Over"
+   },
+   {
+    "id": 33048,
+    "text": "Paste Over Selection"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 33117,
+    "text": "Lock Selected"
+   },
+   {
+    "id": 33118,
+    "text": "Unlock All"
+   },
+   {
+    "id": 33119,
+    "text": "Time Range"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 33049,
+    "text": "Import Multiple..."
+   },
+   {
+    "id": 33050,
+    "text": "Auto Time"
+   },
+   {
+    "id": 33051,
+    "text": "Auto Time 1.0"
+   },
+   {
+    "id": 33052,
+    "text": "Half Rate"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 33053,
+    "text": "Soften Selected"
+   },
+   {
+    "id": 33054,
+    "text": "Neutralize Step"
+   },
+   {
+    "id": 33055,
+    "text": "Neutralize X Step"
+   },
+   {
+    "id": 33056,
+    "text": "Insert Step"
+   },
+   {
+    "id": 33057,
+    "text": "Z-Normalize Center"
+   },
+   {
+    "id": 33058,
+    "text": "X-Normalize Center"
+   },
+   {
+    "id": 33059,
+    "text": "Mirror"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 33060,
+    "text": "From Matrices"
+   },
+   {
+    "id": 33108,
+    "text": "From Matrices (all Lods)"
+   },
+   {
+    "id": 33061,
+    "text": "Export Matrices"
+   }
+  ],
+  "history": [
+   {
+    "text": "Clear History",
+    "items": [
+     {
+      "id": 33140,
+      "text": "No"
+     },
+     {
+      "id": 33139,
+      "text": "Yes, clear now!"
+     }
+    ]
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 32908,
+    "text": "Start Record ..."
+   },
+   {
+    "id": 32909,
+    "text": "Stop"
+   },
+   {
+    "id": 32911,
+    "text": "Delete Action"
+   },
+   {
+    "separator": true
+   },
+   {
+    "id": 32910,
+    "text": "Open Action ..."
+   },
+   {
+    "separator": true
+   }
+  ]
+ },
+ "accelerators": [
+  {
+   "id": 32923,
+   "key": "/"
+  },
+  {
+   "id": 32771,
+   "key": "Ctrl+1"
+  },
+  {
+   "id": 32812,
+   "key": "A"
+  },
+  {
+   "id": 57642,
+   "key": "Ctrl+A"
+  },
+  {
+   "id": 32813,
+   "key": "B"
+  },
+  {
+   "id": 32913,
+   "key": "Ctrl+B"
+  },
+  {
+   "id": 33219,
+   "key": "Shift+B"
+  },
+  {
+   "id": 32874,
+   "key": "C"
+  },
+  {
+   "id": 57634,
+   "key": "Ctrl+C"
+  },
+  {
+   "id": 33065,
+   "key": "Shift+C"
+  },
+  {
+   "id": 32937,
+   "key": "D"
+  },
+  {
+   "id": 32869,
+   "key": "Ctrl+D"
+  },
+  {
+   "id": 32938,
+   "key": "Shift+D"
+  },
+  {
+   "id": 32890,
+   "key": "E"
+  },
+  {
+   "id": 32834,
+   "key": "Ctrl+E"
+  },
+  {
+   "id": 32891,
+   "key": "Shift+E"
+  },
+  {
+   "id": 32858,
+   "key": "F"
+  },
+  {
+   "id": 33085,
+   "key": "G"
+  },
+  {
+   "id": 33087,
+   "key": "Alt+G"
+  },
+  {
+   "id": 32865,
+   "key": "Ctrl+H"
+  },
+  {
+   "id": 32866,
+   "key": "Ctrl+Shift+H"
+  },
+  {
+   "id": 32939,
+   "key": "I"
+  },
+  {
+   "id": 32870,
+   "key": "Ctrl+I"
+  },
+  {
+   "id": 33226,
+   "key": "K"
+  },
+  {
+   "id": 32876,
+   "key": "L"
+  },
+  {
+   "id": 32867,
+   "key": "Ctrl+L"
+  },
+  {
+   "id": 32868,
+   "key": "Ctrl+Shift+L"
+  },
+  {
+   "id": 33203,
+   "key": "M"
+  },
+  {
+   "id": 33199,
+   "key": "Ctrl+M"
+  },
+  {
+   "id": 32938,
+   "key": "Shift+M"
+  },
+  {
+   "id": 33200,
+   "key": "Ctrl+Shift+M"
+  },
+  {
+   "id": 33193,
+   "key": "N"
+  },
+  {
+   "id": 57600,
+   "key": "Ctrl+N"
+  },
+  {
+   "id": 33236,
+   "key": "Shift+N"
+  },
+  {
+   "id": 32820,
+   "key": "O"
+  },
+  {
+   "id": 57601,
+   "key": "Ctrl+O"
+  },
+  {
+   "id": 33064,
+   "key": "Shift+O"
+  },
+  {
+   "id": 33189,
+   "key": "P"
+  },
+  {
+   "id": 57607,
+   "key": "Ctrl+P"
+  },
+  {
+   "id": 33259,
+   "key": "Ctrl+Shift+P"
+  },
+  {
+   "id": 32936,
+   "key": "Q"
+  },
+  {
+   "id": 32819,
+   "key": "R"
+  },
+  {
+   "id": 33272,
+   "key": "Shift+R"
+  },
+  {
+   "id": 33257,
+   "key": "Ctrl+Shift+R"
+  },
+  {
+   "id": 33361,
+   "key": "S"
+  },
+  {
+   "id": 57603,
+   "key": "Ctrl+S"
+  },
+  {
+   "id": 57653,
+   "key": "Shift+S"
+  },
+  {
+   "id": 33184,
+   "key": "T"
+  },
+  {
+   "id": 59392,
+   "key": "Ctrl+T"
+  },
+  {
+   "id": 32896,
+   "key": "Shift+T"
+  },
+  {
+   "id": 32940,
+   "key": "U"
+  },
+  {
+   "id": 33116,
+   "key": "Ctrl+U"
+  },
+  {
+   "id": 32818,
+   "key": "V"
+  },
+  {
+   "id": 57637,
+   "key": "Ctrl+V"
+  },
+  {
+   "id": 33080,
+   "key": "Num++"
+  },
+  {
+   "id": 57643,
+   "key": "Alt+Backspace"
+  },
+  {
+   "id": 32933,
+   "key": "Del"
+  },
+  {
+   "id": 33267,
+   "key": "Ctrl+Del"
+  },
+  {
+   "id": 57635,
+   "key": "Shift+Del"
+  },
+  {
+   "id": 33142,
+   "key": "Ctrl+Shift+End"
+  },
+  {
+   "id": 33286,
+   "key": "Shift+F10"
+  },
+  {
+   "id": 33114,
+   "key": "Shift+F11"
+  },
+  {
+   "id": 33157,
+   "key": "Shift+F11"
+  },
+  {
+   "id": 32820,
+   "key": "F2"
+  },
+  {
+   "id": 33040,
+   "key": "Shift+F2"
+  },
+  {
+   "id": 32817,
+   "key": "F3"
+  },
+  {
+   "id": 32852,
+   "key": "Shift+F3"
+  },
+  {
+   "id": 32818,
+   "key": "F4"
+  },
+  {
+   "id": 32877,
+   "key": "Shift+F4"
+  },
+  {
+   "id": 32919,
+   "key": "F5"
+  },
+  {
+   "id": 32860,
+   "key": "Shift+F5"
+  },
+  {
+   "id": 32941,
+   "key": "F6"
+  },
+  {
+   "id": 32835,
+   "key": "Shift+F6"
+  },
+  {
+   "id": 32886,
+   "key": "F7"
+  },
+  {
+   "id": 33067,
+   "key": "Shift+F7"
+  },
+  {
+   "id": 32888,
+   "key": "F8"
+  },
+  {
+   "id": 32771,
+   "key": "Shift+F8"
+  },
+  {
+   "id": 32795,
+   "key": "F9"
+  },
+  {
+   "id": 32893,
+   "key": "Ctrl+Home"
+  },
+  {
+   "id": 33141,
+   "key": "Ctrl+Shift+Home"
+  },
+  {
+   "id": 32883,
+   "key": "Ins"
+  },
+  {
+   "id": 57634,
+   "key": "Ctrl+Ins"
+  },
+  {
+   "id": 32889,
+   "key": "Ctrl+Ins"
+  },
+  {
+   "id": 57637,
+   "key": "Shift+Ins"
+  },
+  {
+   "id": 33078,
+   "key": "Num+*"
+  },
+  {
+   "id": 33077,
+   "key": "Ctrl+Num+*"
+  },
+  {
+   "id": 33122,
+   "key": "Alt+Num+*"
+  },
+  {
+   "id": 32894,
+   "key": "Ctrl+PgDown"
+  },
+  {
+   "id": 33144,
+   "key": "Ctrl+Shift+PgDown"
+  },
+  {
+   "id": 32895,
+   "key": "Ctrl+PgUp"
+  },
+  {
+   "id": 33143,
+   "key": "Ctrl+Shift+PgUp"
+  },
+  {
+   "id": 33375,
+   "key": "Return"
+  },
+  {
+   "id": 32854,
+   "key": "Space"
+  },
+  {
+   "id": 33081,
+   "key": "Num+-"
+  },
+  {
+   "id": 57680,
+   "key": "Tab"
+  },
+  {
+   "id": 57681,
+   "key": "Shift+Tab"
+  },
+  {
+   "id": 32935,
+   "key": "W"
+  },
+  {
+   "id": 33126,
+   "key": "Ctrl+W"
+  },
+  {
+   "id": 33190,
+   "key": "Shift+W"
+  },
+  {
+   "id": 32804,
+   "key": "X"
+  },
+  {
+   "id": 57635,
+   "key": "Ctrl+X"
+  },
+  {
+   "id": 32805,
+   "key": "Y"
+  },
+  {
+   "id": 32806,
+   "key": "Z"
+  },
+  {
+   "id": 57643,
+   "key": "Ctrl+Z"
+  },
+  {
+   "id": 32943,
+   "key": "\\"
+  }
+ ],
+ "toolbars": [
+  {
+   "resource": 128,
+   "name": "Main Toolbar",
+   "ids": [
+    57600,
+    57601,
+    57603,
+    0,
+    57635,
+    57634,
+    57637,
+    0,
+    57643,
+    57644,
+    0,
+    33360,
+    0,
+    33257,
+    33259
+   ]
+  },
+  {
+   "resource": 137,
+   "name": "View Control Bar",
+   "ids": [
+    33255,
+    0,
+    32786,
+    32785,
+    32787,
+    32788,
+    33129,
+    0,
+    32797,
+    32798,
+    32918,
+    32799,
+    32800,
+    32801,
+    0,
+    32802,
+    32854,
+    32857,
+    33252,
+    32858,
+    32859,
+    33224,
+    33241,
+    33850,
+    33851
+   ]
+  },
+  {
+   "resource": 145,
+   "name": "Edit Toolbar",
+   "ids": [
+    32820,
+    32818,
+    33184,
+    33272,
+    32819,
+    33082,
+    0,
+    32876,
+    33166,
+    33248,
+    0,
+    33089,
+    33090,
+    33091,
+    33092,
+    0,
+    32903,
+    32904,
+    32905,
+    0,
+    32890,
+    32891,
+    33064,
+    0,
+    33522
+   ]
+  },
+  {
+   "resource": 189,
+   "name": "UV Editor",
+   "ids": [
+    33519,
+    33520,
+    33521,
+    0,
+    57643,
+    57644,
+    0,
+    57634,
+    57637,
+    32933,
+    0,
+    33667,
+    33681,
+    33685,
+    33803,
+    33809,
+    33810,
+    33804,
+    0,
+    33680,
+    33713,
+    33699,
+    33676,
+    33674,
+    33800,
+    0,
+    33683,
+    33679,
+    0,
+    33678,
+    33650,
+    33651,
+    33652
+   ]
+  },
+  {
+   "resource": 237,
+   "name": "Selection Operators",
+   "ids": [
+    33831,
+    33833,
+    33832,
+    33834,
+    33835,
+    0,
+    33830
+   ]
+  },
+  {
+   "resource": 423,
+   "name": "Source Control",
+   "ids": [
+    33392,
+    0,
+    33402,
+    33394,
+    33391,
+    33401,
+    0,
+    33393,
+    33416
+   ]
+  }
+ ],
+ "tips": {
+  "32771": "Show or hide Named Properties dialog\nNamed Properies",
+  "32775": "Show or hide Texture Library dialog\nTexture Library",
+  "32784": "Show or hide the View Control ToolBar\nToggle View Control ToolBar",
+  "32785": "View Left\nLeft",
+  "32786": "View Top\nTop",
+  "32787": "View Front\nFront",
+  "32788": "View Projected\nProjected",
+  "32789": "Show or hide User Views library\nUser Views",
+  "32795": "Displays four views",
+  "32802": "Locks camera rotation (in 2D views)\nLock Camera Rotation",
+  "32812": "Set/Modify background texture\nSet/Modify Texture",
+  "32813": "Map selected vertices using background texture\nBackground Mapping",
+  "32814": "Mapping\nMapping",
+  "32817": "Faces selections\nSelect faces",
+  "32818": "Vertices selections\nSelect Vertices",
+  "32819": "Move pin\nMove pin",
+  "32820": "Object selection\nSelectObject",
+  "32834": "Show or hide the Edit ToolBar",
+  "32835": "Show or hide list of LODs\nLODs",
+  "32849": "Redo undoed action\nRedo action",
+  "32850": "Refresh screen: Removes garbage from views, redraws everything",
+  "32852": "Show or hide current position information panel",
+  "32854": "Centers view at pin\nLook At Pin",
+  "32857": "Displays faces filled - usefull for solid preview",
+  "32858": "Removes back oriented faces - useful for preview",
+  "32859": "Enables grid displaying",
+  "32860": "Show or hide Named Selections dialog\nNamed Selections",
+  "32865": "Hide Selection\nHide Selection",
+  "32866": "Unhide all hided objects\nUnhide",
+  "32867": "Lock Selection to prevent any editing operations\nLock Selection",
+  "32868": "Unlock locked objects\nUnlock",
+  "32869": "Remove any selections\nDeselect",
+  "32870": "Invert Selection\nInvert Selection",
+  "32871": "Select locked objects\nSelect locked",
+  "32874": "Center pin to Selection",
+  "32876": "Laso\nLaso",
+  "32877": "Show or hide history panel",
+  "32879": "Draw triangle/nDraw triangle",
+  "32880": "Draw quad/nDraw quad",
+  "32881": "Draw strip/nDraw strip",
+  "32882": "Draw fan\nDraw fan",
+  "32883": "Inserts point into scene. Point into view, where you need create a point and press hotkey",
+  "32885": "Creates a simple plane primitive relative to the pin parallel to current view plane",
+  "32886": "Creates a simple box primitive relative to the pin",
+  "32887": "Creates a simple spehere primitive relative to the pin",
+  "32888": "Creates a simple cylinder primitive relative to the pin",
+  "32890": "Popups face properties",
+  "32891": "Popups dialog with point properties",
+  "32893": "Selects first point in object",
+  "32894": "Selects next point in object",
+  "32895": "Selects previous point in object",
+  "32903": "Transform Points\nMove",
+  "32904": "Transform Points\nRotate",
+  "32905": "Transform Points\nScale",
+  "32913": "Set background from face\nSet background from face",
+  "32914": "Displays options popup",
+  "32915": "Run internal viewer G3D/nRun internal viewer",
+  "32916": "Map in cylindrical coordinates",
+  "32917": "Map in speherical coordinates",
+  "32919": "Forces normal recalculation/nRecaluclate Normals",
+  "32920": "Optimizes object for fast displaying in, DayZ",
+  "32921": "Check for invalid faces - you found invalid faces in selections",
+  "32922": "Select all isolated points",
+  "32923": "Triangulates object",
+  "32924": "Reduces number of faces by creating squares.",
+  "32925": "Finds all components",
+  "32926": "Creates convex geometry (usefull for colision geometry)",
+  "32927": "Convex Hull",
+  "32928": "Finds all non-convex components",
+  "32930": "Finds non-closed objects",
+  "32931": "Closes non-closed objects",
+  "32932": "Splits object into two",
+  "32933": "Delete selection;all points and incidented faces will be removed\nDelete",
+  "32935": "Reverse normals of face",
+  "32936": "Uncrosses squared faces",
+  "32937": "Remove selected faces (leaves only points)",
+  "32938": "Merges selected points into one",
+  "32939": "Forces selected edges to be smoothed\nSmooth Edge",
+  "32940": "Forces selected edges to be sharp\nSharp Edge",
+  "32941": "Inserts new face. 3 or 4 points have to be selected",
+  "32942": "Select faces which are not seen from location where is pin placed",
+  "32943": "Triangulates object",
+  "32944": "Center object",
+  "32945": "Selects face if all points of that face is selected.",
+  "32946": "Selects all points of selected faces.",
+  "32947": "Repair degenerated",
+  "32948": "Check Degenerated",
+  "32949": "Create polygon",
+  "32950": "Sort Faces",
+  "32951": "Show proxy objects",
+  "32952": "Hide proxy objects",
+  "32953": "Sort Alpha Faces",
+  "32954": "Neighbour mapping",
+  "32955": "Break welds",
+  "32956": "Split To Convex",
+  "33039": "Use selection extends to fit background texture/nFit Bgr. from Selection",
+  "33040": "Show or hide animation panel",
+  "33063": "Redefine current animation phase\nUpdate Phase",
+  "33064": "Enables you to assign colors to the faces...",
+  "33065": "Use pin for transfomarions and points inserting...\nUse pin",
+  "33067": "Show or hide mass control pannel",
+  "33077": "Zoom view to drawing (not in projected view)",
+  "33078": "Zoom view to selection (not in projected view)",
+  "33080": "Zoom in current view",
+  "33081": "Zoom out current view",
+  "33082": "Zoom (not in projected view]",
+  "33085": "Makes extrude of selected object. Use ALT+G to popup extrude settings.",
+  "33087": "Show or hide Extrude / Shape configuration panel",
+  "33089": "\nRotate in 2D",
+  "33090": "\nScale in 2D",
+  "33091": "\nMirror on X",
+  "33092": "\nMirror on Y",
+  "33096": "Creates a simple circle primitive relative to the pin paraller to current view plane",
+  "33097": "Creates 3D object from 2D. Use ALT+G to popup options.",
+  "33098": "Select hidden objects",
+  "33099": "Creates weight selection for space deformations",
+  "33103": "Restart External Viewer\nExternal Viewer",
+  "33105": "Export model with textures",
+  "33109": "Match direction in animation captured by MoCap",
+  "33113": "Changes mode of displaying selections in external viewer",
+  "33114": "Show or hide measuring panel",
+  "33115": "Merge object with object loaded from file",
+  "33116": "Modify mapping",
+  "33120": "Exports mesh as 3DStudio scene.",
+  "33122": "Zoom all views to drawing (not in projected view)",
+  "33125": "General calculator",
+  "33126": "Select one side from two-sided face; Use it again to select other side.",
+  "33129": "Transform camera to look at selected face...\nLook at face",
+  "33130": "Merges selected points into one, if they are near...",
+  "33131": "Split one face into two / Create hole in face",
+  "33141": "Move face to the top in order",
+  "33142": "Move face to the bottom in order",
+  "33143": "Move face before next alpha face in order",
+  "33144": "Move face before previous alpha face in order",
+  "33163": "Select faces which are not seen from multiple locations...",
+  "33166": "Lock uniform scale\nUniform scale",
+  "33168": "View Right\nRight",
+  "33169": "View Back\nBack",
+  "33170": "View Bottom\nBottom",
+  "33184": "Touch Faces Mode\nTouch Faces",
+  "33185": "Inserts new proxy",
+  "33187": "Saves document into specified location in Options",
+  "33188": "Merges textures using script from TexMerge",
+  "33189": "Transform points to be in one plane",
+  "33190": "Creates weght selection for linear deformations.",
+  "33192": "Import model from 3DS/MAX with textures and materials",
+  "33193": "Enables to user edit weight in selection directly",
+  "33194": "Copies weight from one LOD to another",
+  "33203": "Map using helper object.",
+  "33205": "Exports mesh in primitive text form optimized for OpenGL",
+  "33215": "Export mesh in older version P3D",
+  "33217": "Imports animation skeleton from ASF/AMC files",
+  "33218": "Imports from BVH file (filmbox)",
+  "33219": "Bevel\nBevel",
+  "33224": "Enable to display normals\nShow normals",
+  "33226": "Select edges and split faces\nTouch Edges",
+  "33228": "Reduces number of faces by creating squares in all lods",
+  "33229": "Merges textures using script from TexMerge",
+  "33235": "Makes texel statistics",
+  "33236": "Locks normals selection in one direction",
+  "33237": "Merge current object with object loaded from file, creates it as simple selection",
+  "33238": "Imports weights from Maya (by Kuba)",
+  "33239": "Imports animation sekeleton from Maya (by Kuba]",
+  "33240": "Imports mesh from OBJ",
+  "33241": "Freezes animation in viewer\nFreeze Animation",
+  "33244": "Unwrap structures creating 2D mesh prepared for mapping. Use it in combination with animations",
+  "33248": "Moves points in direction their normals\nMove by normals",
+  "33249": "Combines two objects together, carve intersections. Select one of then\nCarve",
+  "33250": "Enables user to rename textures and materials in whole model",
+  "33251": "Enables to user assign hotkeys to each command in menu...",
+  "33252": "Shows solid model with wires\nWires In Solid",
+  "33256": "Checks all textures, if exists",
+  "33257": "Records mouse and keyboard macro\nRecord Macro",
+  "33259": "Plays last stored macro\\Play Last Macro",
+  "33272": "Turn edges\nTurn edges",
+  "33391": "Gets the latests versions from source control of all files used in current model\nGet latest version of all referenced files",
+  "33392": "Saves and checks in changes into SourceSave database\nSave and Check In",
+  "33393": "Undoes last checkout\nUndoes last checkout",
+  "33394": "Checks out current file\nCheck Out",
+  "33401": "Shows history of current file\nShow history",
+  "33402": "Opens file from Source Control\nOpen from Source Control",
+  "33416": "Redoes last Undo Check Out operation.\nRedo Check Out and recorver discarded object",
+  "33519": "\nAdd UV Set",
+  "33520": "\nDelete UV Set",
+  "33521": "\n Change ID",
+  "33522": "Opens UV Editor\nUV Editor...",
+  "33523": "Add new UV Set",
+  "33524": "Remove active UV Set",
+  "33525": "Change ID of UV Set",
+  "33650": "\nFit picture",
+  "33651": "\nFit UV map",
+  "33652": "\nFit selection",
+  "33667": "\nBreak selection",
+  "33674": "\nAlpha checker",
+  "33676": "\nTexture lightness",
+  "33678": "\nZoom",
+  "33679": "\nSelect in object",
+  "33680": "\nPlanar mapping",
+  "33681": "\nMerge points",
+  "33683": "\nSelect faces by selection in object",
+  "33685": "\nSnap to near point",
+  "33699": "\nSimple unwrap",
+  "33713": "\nUndeform UV",
+  "33800": "\nShow background LOD in UV Editor",
+  "33831": "Selection operator: None\nSelection operator: None",
+  "33832": "Selection operator: Complement\nSelection operator: Complement",
+  "33833": "Selection operator: Union\nSelection operator: Union",
+  "33834": "Selection operator: Intersection\nSelection operator: Intersection",
+  "33835": "Selection operator: Complement of Intersection\nSelection operator: Complement of Intersection",
+  "33850": "Use Direct3D for viewport rendering\nUse Direct3D",
+  "33851": "Draw textured model\nShow textures",
+  "57344": "Object Builder",
+  "57345": "Ready",
+  "57600": "Create a new document\nNew",
+  "57601": "Open an existing document\nOpen",
+  "57602": "Close the active document\nClose",
+  "57603": "Save the active document\nSave",
+  "57604": "Save the active document with a new name\nSave As",
+  "57605": "Change the printing options\nPage Setup",
+  "57606": "Change the printer and printing options\nPrint Setup",
+  "57607": "Print the active document\nPrint",
+  "57609": "Display full pages\nPrint Preview",
+  "57616": "Open this document",
+  "57617": "Open this document",
+  "57618": "Open this document",
+  "57619": "Open this document",
+  "57620": "Open this document",
+  "57621": "Open this document",
+  "57622": "Open this document",
+  "57623": "Open this document",
+  "57624": "Open this document",
+  "57625": "Open this document",
+  "57626": "Open this document",
+  "57627": "Open this document",
+  "57628": "Open this document",
+  "57629": "Open this document",
+  "57630": "Open this document",
+  "57631": "Open this document",
+  "57632": "Erase the selection\nErase",
+  "57633": "Erase everything\nErase All",
+  "57634": "Copy the selection and put it on the Clipboard\nCopy",
+  "57635": "Cut the selection and put it on the Clipboard\nCut",
+  "57636": "Find the specified text\nFind",
+  "57637": "Insert Clipboard contents\nPaste",
+  "57640": "Repeat the last action\nRepeat",
+  "57641": "Replace specific text with different text\nReplace",
+  "57642": "Select all faces and points\nSelect All",
+  "57643": "Undo the last action\nUndo",
+  "57644": "Redo the previously undone action\nRedo",
+  "57653": "Split the active window into panes\nSplit",
+  "57664": "Display program information, version number and copyright\nAbout",
+  "57665": "Quit the application; prompts to save documents\nExit",
+  "57680": "Switch to the next window pane\nNext Pane",
+  "57681": "Switch back to the previous window pane\nPrevious Pane",
+  "59136": "EXT",
+  "59137": "CAP",
+  "59138": "NUM",
+  "59139": "SCRL",
+  "59140": "OVR",
+  "59141": "REC",
+  "59392": "Show or hide the toolbar\nToggle ToolBar",
+  "59393": "Show or hide the status bar\nToggle StatusBar",
+  "61184": "Change the window size",
+  "61185": "Change the window position",
+  "61186": "Reduce the window to an icon",
+  "61187": "Enlarge the window to full size",
+  "61188": "Switch to the next document window",
+  "61189": "Switch to the previous document window",
+  "61190": "Close the active window and prompts to save the documents",
+  "61202": "Restore the window to normal size",
+  "61203": "Activate Task List",
+  "61445": "Close print preview mode\nCancel Preview"
+ },
+ "undoText": {
+  "10000": "Add LOD %f",
+  "10001": "Remove LOD %f",
+  "10002": "Change LOD from %s to %s",
+  "10003": "Edit LOD %s",
+  "10004": "Select using \"%s\"",
+  "10005": "Hide Selection",
+  "10006": "LockSelection",
+  "10007": "Unhide Selection",
+  "10008": "Unlock Selection",
+  "10009": "Select All",
+  "10010": "Deselect",
+  "10011": "Invert Selection",
+  "10012": "Make Selection",
+  "10013": "Rename selection \"%s\"",
+  "10014": "Save selection",
+  "10015": "Delete Named Selection \"%s\"",
+  "10016": "Redefine Named Selection \"%s\"",
+  "10017": "New Point",
+  "10018": "Draw Triangle",
+  "10019": "Draw Quad",
+  "10020": "Draw Strip",
+  "10021": "Draw Fan",
+  "10022": "Create Primitive",
+  "10023": "Freehand Transform.",
+  "10024": "Transform Points",
+  "10025": "Background Mapping",
+  "10026": "Map using cylindric coordinates",
+  "10027": "Map using speherical coordinates",
+  "10028": "Recalculate Normals",
+  "10029": "Optimize",
+  "10030": "Check Faces",
+  "10031": "Find Isolated Points",
+  "10032": "Triangulate",
+  "10033": "Squarize",
+  "10034": "Find Components",
+  "10035": "Component Convex Hull",
+  "10036": "Convex Hull",
+  "10037": "Find non-convex",
+  "10038": "Select half space",
+  "10039": "Find non-closed",
+  "10040": "Close Topology",
+  "10041": "Split Topology",
+  "10042": "Delete",
+  "10043": "Cut",
+  "10044": "Reverse",
+  "10045": "Uncross",
+  "10046": "Remove Faces",
+  "10047": "Merge Selected",
+  "10048": "Smooth Edges",
+  "10049": "Sharp Edges",
+  "10050": "New Face",
+  "10051": "Pin Cull",
+  "10052": "Triangulate",
+  "10053": "Center All",
+  "10054": "Select faces from points",
+  "10055": "Select points from faces",
+  "10056": "Repair degenerated",
+  "10057": "Check Deg. Faces",
+  "10058": "Create polygon",
+  "10059": "Sort Textures",
+  "10060": "Half Rate Animation",
+  "10061": "From Matrices",
+  "10062": "Sort Alpha Faces",
+  "10063": "Neighbour Mapping",
+  "10064": "Break Welds",
+  "10065": "Split to Convex",
+  "10066": "Triangulate convex",
+  "10067": "Triangulate concave",
+  "10073": "Face Properties",
+  "10074": "Extrude",
+  "10075": "Space Warp",
+  "10076": "Shape",
+  "10077": "Use Calculator",
+  "10078": "Merge Near",
+  "10079": "Split / hole",
+  "10080": "Edit Named Property",
+  "10081": "Face order",
+  "10082": "Select by texture \"%s\"",
+  "10083": "Use Animation Phase %d",
+  "10084": "Add Animation Phase",
+  "10085": "Combine Selections",
+  "10086": "Texture Merge \"%s\"",
+  "10087": "Del Animation Phase(s)",
+  "10088": "Change Phase Time",
+  "10089": "Create Proxy",
+  "10090": "FlattenPoints",
+  "10091": "Normalize Animation",
+  "10092": "Bevel",
+  "10093": "Squarize all",
+  "10094": "Merge Textures All",
+  "10095": "Lock normal(s)",
+  "10096": "Unlock normal(s)",
+  "10097": "Unwrap Structure",
+  "10098": "Carve",
+  "10099": "Replace %s with %s",
+  "10100": "Unselect triangles",
+  "10101": "Remove points",
+  "10102": "Move Selection To Proxy",
+  "10103": "Extract proxy",
+  "10104": "Run script",
+  "10105": "Delete empty selections",
+  "10106": "Redefine Animation",
+  "10107": "Paste Animation",
+  "10108": "Create polygon",
+  "10109": "Select UVSet %d ",
+  "10110": "Import Animation",
+  "10111": "Auto Time Animation",
+  "10112": "Add new UVSet",
+  "10113": "Delete UVSet %d",
+  "10114": "Change UVSet ID: %d->%d",
+  "10115": "Edit UVMap",
+  "10116": "Soften Selected",
+  "10117": "Macro Action At LOD",
+  "10118": "Macro change animation",
+  "10119": "Neutralize Step",
+  "10120": "You must have at least one face unmapped",
+  "10121": "Selected region must have enough neighbour faces mapped",
+  "10122": "Neutralize X Step",
+  "10123": "X-NormalizeCenter",
+  "10124": "Z-Normalize Center",
+  "10125": "Mirror Animation",
+  "10126": "Insert Step",
+  "10127": "Set weights",
+  "10128": "Set Mass",
+  "10129": "Vertex Properties",
+  "10130": "Paste"
+ }
+}

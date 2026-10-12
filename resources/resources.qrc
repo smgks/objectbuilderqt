@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui_spec.json</file>
+        <file>toolbars/tb_128.bmp</file>
+        <file>toolbars/tb_137.bmp</file>
+        <file>toolbars/tb_145.bmp</file>
+        <file>toolbars/tb_189.bmp</file>
+        <file>toolbars/tb_237.bmp</file>
+        <file>toolbars/tb_423.bmp</file>
+    </qresource>
+</RCC>
