@@ -3,6 +3,7 @@
 #include <QColor>
 #include <QMatrix4x4>
 #include <QHash>
+#include <QSet>
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
 #include <QOpenGLFunctions>
@@ -106,6 +107,7 @@ private:
     // GL
     std::unique_ptr<QOpenGLShaderProgram> m_flat, m_lit, m_texProg;
     QHash<QString, QOpenGLTexture *> m_glTex;
+    QSet<QString> m_translucent; // textures with many partly transparent texels (drawn blended)
     QHash<QString, QVector<float>> m_texTris; // per texture: pos3 normal3 color4 uv2
     bool m_dirty = true;
     int m_texGeneration = 0;

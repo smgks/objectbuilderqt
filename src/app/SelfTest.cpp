@@ -237,6 +237,20 @@ int runScreenshot(MainWindow &w, const QString &model, const QString &outFile)
         if (all)
             break;
     }
+    // OB_SHOT_FOCUS=<named selection>: frame that selection in every view.
+    const QString focus = qEnvironmentVariable("OB_SHOT_FOCUS");
+    if (const NamedSelection *ns = focus.isEmpty() ? nullptr : w.document()->active().findSelection(focus)) {
+        const ObjectData &o = w.document()->active();
+        QVector3D mn(1e30f, 1e30f, 1e30f), mx(-1e30f, -1e30f, -1e30f);
+        for (int i = 0; i < o.points.size(); ++i)
+            if (ns->sel.point(i)) {
+                mn = QVector3D(std::min(mn.x(), o.points[i].pos.x()), std::min(mn.y(), o.points[i].pos.y()), std::min(mn.z(), o.points[i].pos.z()));
+                mx = QVector3D(std::max(mx.x(), o.points[i].pos.x()), std::max(mx.y(), o.points[i].pos.y()), std::max(mx.z(), o.points[i].pos.z()));
+            }
+        if (mn.x() <= mx.x())
+            for (Viewport *v : w.viewports())
+                v->zoomToBox(mn, mx);
+    }
     for (int i = 0; i < 5; ++i) {
         w.refreshViews();
         QApplication::processEvents(QEventLoop::AllEvents, 100);

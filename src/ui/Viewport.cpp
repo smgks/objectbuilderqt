@@ -69,12 +69,13 @@ void main() {
 
 const char *kTexFs = R"(
 uniform sampler2D uTex;
+uniform float uBlend; // 0: alpha-tested cut-out, 1: alpha-blended (translucent)
 varying vec4 vColor;
 varying vec2 vUV;
 void main() {
     vec4 t = texture2D(uTex, vUV);
-    if (t.a < 0.5) discard;
-    gl_FragColor = vec4(t.rgb * vColor.rgb, 1.0);
+    if (t.a < mix(0.5, 0.01, uBlend)) discard;
+    gl_FragColor = vec4(t.rgb * vColor.rgb, mix(1.0, t.a, uBlend));
 })";
 
 constexpr float kFov = 45.0f;
@@ -341,6 +342,7 @@ QOpenGLTexture *Viewport::glTexture(const QString &path)
     if (m_texGeneration != m_settings->textureGeneration) {
         qDeleteAll(m_glTex);
         m_glTex.clear();
+        m_translucent.clear();
         m_texGeneration = m_settings->textureGeneration;
     }
     if (QOpenGLTexture *t = m_glTex.value(path))
@@ -372,9 +374,26 @@ QOpenGLTexture *Viewport::glTexture(const QString &path)
         return nullptr;
     }
     auto *t = new QOpenGLTexture(QOpenGLTexture::Target2D);
+    const QImage rgba = img.convertToFormat(QImage::Format_RGBA8888);
+    // Translucent (e.g. "_ca" glass, clear plastic): enough texels that are
+    // neither fully opaque nor fully clear. Those are blended like the game
+    // does; textures with only on/off alpha stay alpha-tested cut-outs.
+    {
+        qint64 partial = 0, sampled = 0;
+        const int step = std::max(1, rgba.width() / 128);
+        for (int y = 0; y < rgba.height(); y += step) {
+            const uchar *row = rgba.constScanLine(y);
+            for (int x = 0; x < rgba.width(); x += step, ++sampled) {
+                const uchar a = row[4 * x + 3];
+                partial += a > 16 && a < 240;
+            }
+        }
+        if (sampled && partial * 20 > sampled) // > 5 %
+            m_translucent.insert(path);
+    }
     // Uploaded top row first: texture v = 0 is the top of the image, the
     // DirectX convention used by P3D UVs.
-    t->setData(img.convertToFormat(QImage::Format_RGBA8888), QOpenGLTexture::GenerateMipMaps);
+    t->setData(rgba, QOpenGLTexture::GenerateMipMaps);
     t->setMinMagFilters(QOpenGLTexture::LinearMipMapLinear, QOpenGLTexture::Linear);
     t->setWrapMode(QOpenGLTexture::Repeat);
     m_glTex.insert(path, t);
@@ -574,29 +593,45 @@ void Viewport::paintGL()
         m_lit->setUniformValue("uTwoSided", twoSided);
         drawArrays(*m_lit, GL_TRIANGLES, m_tris, 10, true);
         // Textured batches; textures still loading (or missing) draw untextured.
-        for (auto it = m_texTris.cbegin(); it != m_texTris.cend(); ++it) {
-            QOpenGLTexture *tex = glTexture(it.key());
-            if (!tex) {
-                QVector<float> plain;
-                plain.reserve(it.value().size() / 12 * 10);
-                for (qsizetype i = 0; i + 12 <= it.value().size(); i += 12) {
-                    for (int k = 0; k < 6; ++k)
-                        plain << it.value()[i + k];
-                    plain << float(kSolid.redF()) << float(kSolid.greenF()) << float(kSolid.blueF()) << 1.0f;
-                }
-                m_lit->bind();
-                drawArrays(*m_lit, GL_TRIANGLES, plain, 10, true);
-                continue;
+        // Pass 0 draws opaque and cut-out textures; pass 1 then blends the
+        // translucent ones over them without writing depth, so what is behind
+        // glass or clear plastic stays visible.
+        for (int pass = 0; pass < 2; ++pass) {
+            if (pass == 1) {
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                glDepthMask(GL_FALSE);
             }
-            m_texProg->bind();
-            m_texProg->setUniformValue("uMvp", m);
-            m_texProg->setUniformValue("uLight", light);
-            m_texProg->setUniformValue("uTwoSided", twoSided);
-            m_texProg->setUniformValue("uTex", 0);
-            tex->bind(0);
-            drawArrays(*m_texProg, GL_TRIANGLES, it.value(), 12, true, true);
-            tex->release(0);
+            for (auto it = m_texTris.cbegin(); it != m_texTris.cend(); ++it) {
+                QOpenGLTexture *tex = glTexture(it.key());
+                const bool translucent = tex && m_translucent.contains(it.key());
+                if (translucent != (pass == 1))
+                    continue;
+                if (!tex) {
+                    QVector<float> plain;
+                    plain.reserve(it.value().size() / 12 * 10);
+                    for (qsizetype i = 0; i + 12 <= it.value().size(); i += 12) {
+                        for (int k = 0; k < 6; ++k)
+                            plain << it.value()[i + k];
+                        plain << float(kSolid.redF()) << float(kSolid.greenF()) << float(kSolid.blueF()) << 1.0f;
+                    }
+                    m_lit->bind();
+                    drawArrays(*m_lit, GL_TRIANGLES, plain, 10, true);
+                    continue;
+                }
+                m_texProg->bind();
+                m_texProg->setUniformValue("uMvp", m);
+                m_texProg->setUniformValue("uLight", light);
+                m_texProg->setUniformValue("uTwoSided", twoSided);
+                m_texProg->setUniformValue("uTex", 0);
+                m_texProg->setUniformValue("uBlend", translucent ? 1.0f : 0.0f);
+                tex->bind(0);
+                drawArrays(*m_texProg, GL_TRIANGLES, it.value(), 12, true, true);
+                tex->release(0);
+            }
         }
+        glDepthMask(GL_TRUE);
+        glDisable(GL_BLEND);
         glDisable(GL_POLYGON_OFFSET_FILL);
     }
     glDisable(GL_CULL_FACE);

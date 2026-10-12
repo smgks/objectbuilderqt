@@ -471,11 +471,32 @@ void convertLod(const OdolLod &L, ObjectData &o, QStringList &warnings, const Mo
         }
     } else {
         // Binarized LODs usually drop the point map; vertices are split at UV
-        // seams and hard edges. Weld identical positions back into shared
-        // points like an editable model has them.
+        // seams and hard edges. Weld them back into shared points like an
+        // editable model has them. Splits of one original point share its
+        // position, bone weights and point selections, so all of those form
+        // the key: separate parts that merely touch (a bolt against the
+        // receiver, a proxy triangle on the body) stay separate.
+        QVector<QByteArray> member(nV);
+        for (int s = 0; s < L.selections.size(); ++s)
+            for (quint16 vx : L.selections[s].vertices)
+                if (vx < nV)
+                    member[vx] += QByteArray(reinterpret_cast<const char *>(&s), sizeof(s));
+        for (int s = 0; s < L.selections.size(); ++s) {
+            if (!L.selections[s].name.startsWith(QLatin1String("proxy:"), Qt::CaseInsensitive))
+                continue;
+            for (quint16 f : L.selections[s].faces)
+                if (f < L.faces.size())
+                    for (quint16 vx : L.faces[f])
+                        if (vx < nV && !member[vx].startsWith('P'))
+                            member[vx].prepend('P');
+        }
+        const bool hasRefs = L.vertexBoneRefs.size() == qsizetype(nV) * 12;
         QHash<QByteArray, int> seen;
         for (int i = 0; i < nV; ++i) {
-            const QByteArray key(reinterpret_cast<const char *>(&L.positions[i]), sizeof(QVector3D));
+            QByteArray key(reinterpret_cast<const char *>(&L.positions[i]), sizeof(QVector3D));
+            if (hasRefs)
+                key += L.vertexBoneRefs.mid(qsizetype(i) * 12, 12);
+            key += member[i];
             auto it = seen.constFind(key);
             if (it != seen.constEnd()) {
                 vToP[i] = *it;
