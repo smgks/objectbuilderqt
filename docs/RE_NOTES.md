@@ -264,6 +264,16 @@ vec3[] positions ; condensed packed normals ; u64[] ST coords ;
   stay empty; like the original, empty selections are not saved.
 * Face-only selections (hiddenSelections like `camo`) get their faces' points
   added, as an editable model has them.
+* **Welding split vertices back into points** uses position + the vertex's
+  bone refs + its point-selection membership + "used by a proxy face" as the
+  key. Splits of one original point share all of these; separate parts that
+  only touch (bolt against receiver) do not. Position alone merged 169 points
+  across parts on the L115A3, 269 on the AKM and 1690 on the sedan, so moving
+  parts would have dragged neighbouring faces. Regression fixture:
+  `tests/data/binarize_bones_*` (two touching boxes, one bone each).
+* Section `special` flags depend on the textures and materials binarize can
+  load: the G36 round trip lost `0x100` (alpha) and `0x20000` when its
+  `data` folder was missing and matched the original once it was present.
 * Proxy triangles and `proxy:` selections are kept; their points get flag
   `0x1000000`. A proxy without a selection is rebuilt from its transform as
   pin, pin + 2·up, pin + dir (the CICreateProxy shape) — **inferred** mapping.
