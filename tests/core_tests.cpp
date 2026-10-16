@@ -378,6 +378,46 @@ static void testObjWinding()
     QFile::remove(path);
 }
 
+// Source of tests/data/binarize_bones_odol.p3d: two unit boxes that touch
+// face to face, each a bone ("part_a", "part_b").
+static LodObject bonesSample()
+{
+    LodObject m;
+    ObjectData &o = m.lods[0].data;
+    for (int part = 0; part < 2; ++part) {
+        const int firstPoint = o.points.size(), firstFace = o.faces.size();
+        QMatrix4x4 at;
+        at.translate(float(part), 0, 0);
+        Primitives::box(o, {}, at);
+        NamedSelection ns;
+        ns.name = part == 0 ? QStringLiteral("part_a") : QStringLiteral("part_b");
+        ns.sel.resize(o.points.size(), o.faces.size());
+        for (int i = firstPoint; i < o.points.size(); ++i)
+            ns.sel.points[i] = 255;
+        for (int f = firstFace; f < o.faces.size(); ++f)
+            ns.sel.faces[f] = 1;
+        o.namedSelections.append(ns);
+    }
+    for (NamedSelection &ns : o.namedSelections)
+        ns.sel.resize(o.points.size(), o.faces.size());
+    o.selection.clear();
+    for (Face &f : o.faces)
+        f.texture = QStringLiteral("#(argb,8,8,3)color(0.5,0.5,0.5,1,co)");
+    return m;
+}
+
+// Source of tests/data/binarize_v56_odol.p3d (DayZ Tools 1.30 binarize, ODOL
+// v56): the bones sample plus a Geometry LOD box of 8 x 0.625 = 5 kg.
+static LodObject v56Sample()
+{
+    LodObject m = bonesSample();
+    ObjectData g;
+    Primitives::box(g, {}, QMatrix4x4());
+    g.mass.fill(0.625f, g.points.size());
+    m.addLod(LodNames::Geometry, g);
+    return m;
+}
+
 static void testOdolKeepsWinding()
 {
     // binarize_box_src.p3d binarized by DayZ Tools' binarize.exe gives
@@ -445,6 +485,28 @@ static void testOdolKeepsBonePartsSeparate()
     }
 }
 
+static void testOdolV56()
+{
+    // binarize_v56_odol.p3d: v56Sample() binarized by DayZ Tools 1.30 binarize
+    // with binarize_bones_model.cfg. ModelInfo has one more u32 than v55;
+    // the skeleton and the mass after it must still be found.
+    QFile f(QStringLiteral(OB_TEST_DATA_DIR "/binarize_v56_odol.p3d"));
+    CHECK(f.open(QIODevice::ReadOnly));
+    LodObject m;
+    QString err;
+    Odol::Info info;
+    CHECK(Odol::load(f.readAll(), m, &err, &info));
+    CHECK(info.version == 56);
+    CHECK(info.bones == QStringList({QStringLiteral("part_a"), QStringLiteral("part_b")}));
+    const int g = m.find(LodNames::Geometry);
+    CHECK(g >= 0);
+    if (g < 0)
+        return;
+    CHECK(qAbs(m.lods[g].data.totalMass() - 5.0f) < 1e-3f);
+    const int v = m.find(1.0f);
+    CHECK(v >= 0 && m.lods[v].data.points.size() == 16 && m.lods[v].data.faces.size() == 12);
+}
+
 static void testPaaProcedural()
 {
     const QImage img = Paa::procedural(QStringLiteral("#(argb,8,8,3)color(1,0,0,1,co)"));
@@ -455,30 +517,8 @@ static void testPaaProcedural()
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
-    if (argc == 3 && QByteArray(argv[1]) == "--write-bones-sample") {
-        // Source of tests/data/binarize_bones_odol.p3d: two unit boxes that
-        // touch face to face, each a bone ("part_a", "part_b").
-        LodObject m;
-        ObjectData &o = m.lods[0].data;
-        for (int part = 0; part < 2; ++part) {
-            const int firstPoint = o.points.size(), firstFace = o.faces.size();
-            QMatrix4x4 at;
-            at.translate(float(part), 0, 0);
-            Primitives::box(o, {}, at);
-            NamedSelection ns;
-            ns.name = part == 0 ? QStringLiteral("part_a") : QStringLiteral("part_b");
-            ns.sel.resize(o.points.size(), o.faces.size());
-            for (int i = firstPoint; i < o.points.size(); ++i)
-                ns.sel.points[i] = 255;
-            for (int f = firstFace; f < o.faces.size(); ++f)
-                ns.sel.faces[f] = 1;
-            o.namedSelections.append(ns);
-        }
-        for (NamedSelection &ns : o.namedSelections)
-            ns.sel.resize(o.points.size(), o.faces.size());
-        o.selection.clear();
-        for (Face &f : o.faces)
-            f.texture = QStringLiteral("#(argb,8,8,3)color(0.5,0.5,0.5,1,co)");
+    if (argc == 3 && (QByteArray(argv[1]) == "--write-bones-sample" || QByteArray(argv[1]) == "--write-v56-sample")) {
+        const LodObject m = QByteArray(argv[1]) == "--write-bones-sample" ? bonesSample() : v56Sample();
         QString err;
         if (!P3dIO::save(QString::fromLocal8Bit(argv[2]), m, {}, &err)) {
             std::fprintf(stderr, "%s\n", qPrintable(err));
@@ -508,6 +548,7 @@ int main(int argc, char **argv)
     testObjWinding();
     testOdolKeepsWinding();
     testOdolKeepsBonePartsSeparate();
+    testOdolV56();
     testPaaProcedural();
     if (g_failures)
         std::fprintf(stderr, "%d check(s) failed\n", g_failures);

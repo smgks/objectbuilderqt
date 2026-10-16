@@ -19,4 +19,5 @@ analyzeHeadless.bat <projdir> binarize -process binarize.exe -noanalysis -readOn
 ```
 
 Queries: `str:<text>` (decompile functions referencing a string), `fn:<addr>`,
-`callers:<addr>`, `calls:<addr>`, `asm:<addr>`, `vt:<vtable symbol>`.
+`callers:<addr>`, `calls:<addr>`, `asm:<addr>`, `vt:<vtable symbol>`,
+`imm:<hex>` (functions with `CMP x, <hex>`, e.g. `imm:38` for ODOL v56 checks).

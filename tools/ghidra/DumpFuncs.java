@@ -5,6 +5,7 @@
 //   callers:<hex>  list callers of the function containing the address
 //   calls:<hex>    list callees
 //   asm:<hex>      disassembly of the function containing the address
+//   imm:<hex>      list functions comparing against the immediate (CMP x, imm)
 //@category REA
 import ghidra.app.script.GhidraScript;
 import ghidra.app.decompiler.*;
@@ -12,6 +13,7 @@ import ghidra.program.model.listing.*;
 import ghidra.program.model.address.*;
 import ghidra.program.model.symbol.*;
 import ghidra.program.model.data.*;
+import ghidra.program.model.scalar.Scalar;
 import java.io.*;
 import java.util.*;
 
@@ -35,6 +37,7 @@ public class DumpFuncs extends GhidraScript {
             else if (q.startsWith("calls:")) calls(fnAt(q.substring(6)));
             else if (q.startsWith("asm:")) asm(fnAt(q.substring(4)));
             else if (q.startsWith("vt:")) vtable(q.substring(3));
+            else if (q.startsWith("imm:")) byCmpImmediate(q.substring(4));
         }
         out.close();
     }
@@ -102,5 +105,22 @@ public class DumpFuncs extends GhidraScript {
             Instruction ins = it.next();
             out.println(ins.getAddress() + "  " + ins);
         }
+    }
+
+    // Functions with a CMP against the immediate (e.g. an ODOL version check).
+    void byCmpImmediate(String hex) {
+        long v = Long.parseUnsignedLong(hex.replace("0x", ""), 16);
+        Map<Function, List<Address>> hits = new LinkedHashMap<>();
+        InstructionIterator it = currentProgram.getListing().getInstructions(true);
+        while (it.hasNext()) {
+            Instruction ins = it.next();
+            if (!ins.getMnemonicString().equals("CMP") || ins.getNumOperands() != 2) continue;
+            Object[] ops = ins.getOpObjects(1);
+            if (ops.length != 1 || !(ops[0] instanceof Scalar) || ((Scalar) ops[0]).getUnsignedValue() != v) continue;
+            Function f = getFunctionContaining(ins.getAddress());
+            if (f != null) hits.computeIfAbsent(f, k -> new ArrayList<>()).add(ins.getAddress());
+        }
+        for (Map.Entry<Function, List<Address>> e : hits.entrySet())
+            out.println("cmp " + hex + " in " + e.getKey().getName() + " @" + e.getKey().getEntryPoint() + " x" + e.getValue().size() + " " + e.getValue());
     }
 }

@@ -181,9 +181,21 @@ with headless Ghidra 12.1.4 (the same engine REA drives; the binary was too
 large for REA's request timeout). Addresses below are in that binary.
 All **observed** unless marked otherwise.
 
+**DayZ Tools 1.30** (`BINARIZE 1.30.164078.38`, SHA-256
+`f1594bce29a6d3cabe9ff08a24af6c4f31da6e9def5b09159ce0428614cb6d5b`) writes
+ODOL **v56**. Re-analysed the same way (`tools/ghidra`, `imm:38` finds the new
+version checks). In that binary `LODShape::SerializeBin` is `0x1407f9490`
+(rejects versions outside 0x1c..0x38: "Model %s is in unsupported format %d
+(current format is %d, minimum supported is %d)") and ModelInfo is
+`0x1407fd730`. The only v56 change in the file layout is one ModelInfo field
+(below); the rest of the serializer's version checks are the same as before,
+and v56 LODs parse like v55 ones (checked on the AKM binarized by 1.30 and on
+`tests/data/binarize_v56_odol.p3d`). Addresses elsewhere in this section are
+in the older binary.
+
 ### File (`LODShape::SerializeBin`, `0x140937300`)
 ```
-"ODOL" u32 version            (engine accepts 28..55; DayZ ships 54)
+"ODOL" u32 version            (1.30 engine accepts 28..56; DayZ ships 54)
 u32 nLods (low byte used) ; f32 resolution[nLods]
 ModelInfo                      (0x14093ad50, see below)
 v>29: u8 hasAnimations ; AnimationHolder (skipped by the reader)
@@ -197,10 +209,13 @@ The reader locates the LOD table by its signature (max end = file size and the
 first LOD starting right after table + summaries), so animation data does not
 need decoding. Verified on all 14,688 models in the DayZ install.
 
-### ModelInfo (v54)
+### ModelInfo (v54–56)
 special, bounding/geometry sphere, remarks, and/or hints, aiming centre,
 colours, view density, bbox, visual bbox (v≥52), bounding/geometry centre,
-centre of mass, inverse inertia (3×3), 4 bools, v>52: u8 + f32, v≥42: 4 floats,
+centre of mass, inverse inertia (3×3), 4 bools, v>52: u8 + f32,
+**v≥56: i32** (a byte member at ModelInfo+0x1e0 written sign-extended to 4
+bytes, read back truncated to a byte; 1.30 `0x1407fda7e`; meaning not
+recovered, 0 in every file seen), v≥42: 4 floats,
 v≥43: 2 floats, v>32: u8, v>36: u32 + u8, v≥48: shadow offset, u8 animated,
 skeleton name + (if set) `SkeletonSource` (u8, bones as name/parent pairs,
 v>40 pivots name), u8 map type, **mass array** (compressed f32), **mass**,

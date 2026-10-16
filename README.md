@@ -59,6 +59,7 @@ build/ObjectBuilderQt.exe --selftest out_dir       # drives menu commands + mous
 build/ObjectBuilderQt.exe --list-commands docs/COMMANDS.md   # regenerate the coverage table
 build/ObjectBuilderQt.exe --screenshot "dz\weapons\firearms\akm\akm.p3d" akm.png   # textured capture
 build/obcore_tests.exe --write-sample sample.p3d   # small multi-LOD model for manual testing
+build/obcore_tests.exe --write-v56-sample bones.p3d   # source of tests/data/binarize_v56_odol.p3d (binarize with binarize_bones_model.cfg as model.cfg)
 build/obtool.exe odol-scan "C:/Program Files (x86)/Steam/steamapps/common/DayZ"   # convert every game model
 node tests/make_test_fbx.js tests/data             # regenerate the FBX fixtures
 ```
@@ -74,7 +75,8 @@ went through Blender and back.
 
 - **Game models** - *File > Open from Game Data...* (Ctrl+Shift+O) lists every
   `.p3d` in the DayZ archives (14,688 in the current game) with a filter box.
-  *File > Open* also accepts binarized `.p3d` files on disk. Binarized (ODOL)
+  *File > Open* also accepts binarized `.p3d` files on disk, including ODOL v56
+  written by DayZ Tools 1.30 binarize (game models are v54). Binarized (ODOL)
   models are converted to editable MLOD: all LODs, faces, UVs (all sets),
   textures and materials, named selections (with weights), named properties,
   proxies, keyframe phases, sharp edges and geometry mass. The result has no
@@ -182,7 +184,7 @@ src/core/      no-UI library (obcore): data model, file formats, primitives, mes
   ObjectData     one LOD: points, faces, selections, properties, UV sets, mass...
   LodObject      the model (sorted LODs) + LOD naming
   P3dIO          MLOD reader/writer (byte-exact round trip)
-  Odol           binarized model (ODOL v28-55) reader -> MLOD
+  Odol           binarized model (ODOL v28-56) reader -> MLOD
   FbxIO, ObjIO   importers
   Pbo            PBO archives + GameFileSystem (indexed game data)
   Paa            texture decoding; Compression: LZO1X and BI LZSS
@@ -193,7 +195,7 @@ src/app/       Document (model + undo), CommandRegistry, command handlers, GameD
 src/ui/        MainWindow, Viewport (OpenGL), dock panels, dialogs, UiSpec loader
 resources/     ui_spec.json + toolbar bitmaps generated from the original exe
 tools/         gen_ui_spec.js (regenerates resources from ObjectBuilder.exe)
-tests/         core tests, obtool CLI, fixtures in tests/data (FBX incl. a Blender export with embedded textures, binarize.exe box pair)
+tests/         core tests, obtool CLI, fixtures in tests/data (FBX incl. a Blender export with embedded textures, binarize.exe source/ODOL pairs incl. a v56 one from DayZ Tools 1.30)
 ```
 
 ## Adding a feature

@@ -14,8 +14,9 @@
 
 // Reconstructed from the engine's LODShape/Shape SerializeBin in DayZ Tools'
 // binarize.exe (functions 0x140937300, 0x14093ad50, 0x140938ca0 and helpers;
-// see docs/RE_NOTES.md section 8). Supports ODOL versions 28..55 as the engine
-// does; DayZ ships version 54.
+// see docs/RE_NOTES.md section 8). Supports ODOL versions 28..56 as the engine
+// does; DayZ ships version 54, DayZ Tools 1.30 binarize writes 56 (its
+// ModelInfo serializer is 0x1407fd730).
 
 namespace {
 
@@ -825,6 +826,8 @@ bool readModelInfo(Reader &r, ModelInfo &mi)
     r.skip(4);              // autocenter, lock autocenter, can occlude, can be occluded
     if (v > 52)
         r.skip(1 + 4);
+    if (v >= 56)
+        r.skip(4);          // i32 holding a byte member (+0x1e0), 1.30 0x1407fda7e
     if (v >= 42)
         r.skip(16);         // ht/af/mf
     if (v >= 43)
@@ -911,8 +914,8 @@ bool Odol::load(const QByteArray &data, LodObject &out, QString *error, Info *in
     r.version = r.i32();
     if (info)
         info->version = r.version;
-    if (r.version < 28 || r.version > 55)
-        return fail(QStringLiteral("Unsupported ODOL version %1 (supported 28..55)").arg(r.version));
+    if (r.version < 28 || r.version > 56)
+        return fail(QStringLiteral("Unsupported ODOL version %1 (supported 28..56)").arg(r.version));
     const int nLods = int(r.u32() & 0xff);
     if (nLods <= 0)
         return fail(QStringLiteral("Model has no LODs"));

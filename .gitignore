@@ -2,3 +2,5 @@ build/
 .idea/
 build-debug/
 *.user
+ide/
+.qtcreator/
